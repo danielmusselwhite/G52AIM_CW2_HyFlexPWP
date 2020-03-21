@@ -4,6 +4,7 @@ package com.aim.project.pwp;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -23,6 +24,8 @@ import com.aim.project.pwp.interfaces.PWPInstanceInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
 import com.aim.project.pwp.interfaces.Visualisable;
 import com.aim.project.pwp.interfaces.XOHeuristicInterface;
+import com.aim.project.pwp.solution.PWPSolution;
+import com.aim.project.utilities.Utilities;
 
 import AbstractClasses.ProblemDomain;
 
@@ -54,12 +57,13 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	
 	public PWPSolutionInterface getSolution(int index) {
 		
-		// TODO 
+		// DONE 
+		return aoMemoryOfSolutions[index];
 	}
 	
 	public PWPSolutionInterface getBestSolution() {
 		
-		// TODO 
+		return oBestSolution;
 	}
 
 	@Override
@@ -68,6 +72,27 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// TODO - apply heuristic and return the objective value of the candidate solution
 		//			remembering to keep track/update the best solution
+		
+		// candidateSolution so we don't modify the main
+		this.copySolution(currentIndex, candidateIndex);
+
+		this.aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[candidateIndex], 0.5d, 0.5d);
+		
+		// if this candidate is an improvement, accept it 
+		if(this.getFunctionValue(candidateIndex)<this.getFunctionValue(currentIndex)) {
+			this.copySolution(candidateIndex, currentIndex);
+			
+			// if it is also better than the current best value, update that
+			if(this.getFunctionValue(currentIndex)<this.getBestSolutionValue())
+				this.updateBestSolution(currentIndex);
+		}
+				
+		// else reject it
+		else
+			this.copySolution(currentIndex, candidateIndex);
+	
+		// return the value the new score is (may be same if it was rejected or better if it was accepted
+		return this.getFunctionValue(currentIndex);
 	}
 
 	@Override
@@ -75,6 +100,7 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// TODO - apply heuristic and return the objective value of the candidate solution
 		//			remembering to keep track/update the best solution
+	
 	}
 
 	@Override
@@ -82,32 +108,35 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// TODO return the location IDs of the best solution including DEPOT and HOME locations
 		//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME"
+		
+		this.solutionToString(this.aoMemoryOfSolutions. this.oBestSolution);
 	}
 
 	@Override
 	public boolean compareSolutions(int iIndexA, int iIndexB) {
 
-		// TODO return true if the objective values of the two solutions are the same, else false
+		// DONE return true if the objective values of the two solutions are the same, else false
+		return aoMemoryOfSolutions[iIndexA].getObjectiveFunctionValue() == aoMemoryOfSolutions[iIndexB].getObjectiveFunctionValue();
 	}
 
 	@Override
 	public void copySolution(int iIndexA, int iIndexB) {
 
-		// TODO - BEWARE this should copy the solution, not the reference to it!
+		// DONE - BEWARE this should copy the solution, not the reference to it!
 		//			That is, that if we apply a heuristic to the solution in index 'b',
 		//			then it does not modify the solution in index 'a' or vice-versa.
 		
-		
+		aoMemoryOfSolutions[iIndexB] = aoMemoryOfSolutions[iIndexA].clone();
 	}
 
 	@Override
 	public double getBestSolutionValue() {
 		// DONE
 		//get the value of the first solution
-		double bestSolutionValue = oObjectiveFunction.getObjectiveFunctionValue(aoMemoryOfSolutions[0].getSolutionRepresentation());
+		double bestSolutionValue = getFunctionValue(0);
 		//go through each of the other solutions iteratively and check if they produce a better solution value
 		for(int i=1; i<getNumberOfInstances(); i++) {
-			double thisSolutionValue = oObjectiveFunction.getObjectiveFunctionValue(aoMemoryOfSolutions[i].getSolutionRepresentation());
+			double thisSolutionValue = getFunctionValue(i);
 			if(thisSolutionValue<bestSolutionValue)
 				bestSolutionValue = thisSolutionValue;
 		}
@@ -118,26 +147,46 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	@Override
 	public double getFunctionValue(int index) {
 		
-		// TODO
+		// DONE
+		
+		return this.aoMemoryOfSolutions[index].getObjectiveFunctionValue();
 	}
 
 	@Override
 	public int[] getHeuristicsOfType(HeuristicType type) {
 		
 		// TODO return an array of heuristic IDs based on the heuristic's type.
-		
+
 	}
 
 	@Override
 	public int[] getHeuristicsThatUseDepthOfSearch() {
 		
-		// TODO return the array of heuristic IDs that use depth of search.
+		// DONE return the array of heuristic IDs that use depth of search.
+		
+		ArrayList<Integer> alDOS = new ArrayList<Integer>();
+		
+		// for each heuristic check if it uses depth of search and if it does add its index to the array list
+		for(int i=0; i<this.aoHeuristics.length; i++)
+			if(aoHeuristics[i].usesDepthOfSearch())
+				alDOS.add(i);
+		
+		return Utilities.convertToArray(alDOS);
 	}
 
 	@Override
 	public int[] getHeuristicsThatUseIntensityOfMutation() {
 		
-		// TODO return the array of heuristic IDs that use intensity of mutation.
+		// DONE return the array of heuristic IDs that use intensity of mutation.
+		
+		ArrayList<Integer> alIOM = new ArrayList<Integer>();
+		
+		// for each heuristic check if it uses intensity of mutation and if it does add its index to the array list
+		for(int i=0; i<this.aoHeuristics.length; i++)
+			if(aoHeuristics[i].usesIntensityOfMutation())
+				alIOM.add(i);
+		
+		return Utilities.convertToArray(alIOM);
 	}
 
 	@Override
@@ -160,9 +209,15 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		// TODO - initialise a solution in index 'index' 
 		// 		making sure that you also update the best solution!
 		
+		//PWPInstanceReader oPwpReader = new PWPInstanceReader();
+		//aoMemoryOfSolutions[index]= oPwpReader;
+				
+		
+		this.loadInstance(index);
+		this.updateBestSolution(index);
 	}
 
-	// TODO implement the instance reader that this method uses
+	// DONE implement the instance reader that this method uses
 	//		to correctly read in the PWP instance, and set up the objective function.
 	@Override
 	public void loadInstance(int instanceId) {
@@ -205,8 +260,20 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	@Override
 	public String solutionToString(int index) {
 
-		// TODO
-
+		// DONE
+		String representation = new String();
+		int[] locations = aoMemoryOfSolutions[index].getSolutionRepresentation().getSolutionRepresentation();
+		
+		
+//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME"
+		representation += "DEPOT -> ";
+		for(int i=0; i<locations.length; i++) {
+			representation += locations[i];
+			representation+=" -> ";
+		}
+		representation+="HOME";
+		
+		return representation;
 	}
 
 	@Override
