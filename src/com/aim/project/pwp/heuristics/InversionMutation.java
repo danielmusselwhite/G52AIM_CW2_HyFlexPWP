@@ -22,7 +22,7 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 	@Override
 	public double apply(PWPSolutionInterface oSolution, double dDepthOfSearch, double dIntensityOfMutation) {
 		// rule is numberOfIterations = 2(n+1) where n = number of 0.2's there are in intensityOfMutation
-		//by dividing IOM by 0.2 then cast to int to ignore decimal place and you have n
+		//by dividing IOM by 0.2 you have n
 		//int numberOfIterations = (int) (2*((dIntensityOfMutation)/0.2d)+1);
 		
 		int numberOfIterations=0;

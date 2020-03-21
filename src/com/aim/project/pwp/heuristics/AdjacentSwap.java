@@ -21,7 +21,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 	public double apply(PWPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
 		
 		// rule is numberOfIterations = 2^n where n = number of 0.2's there are in intensityOfMutation
-		//by dividing IOM by 0.2 then cast to int to ignore decimal place and you have n
+		//by dividing IOM by 0.2 you have n
 		//int numberOfIterations = (int) Math.pow(2, (int)((intensityOfMutation)/0.2d));
 		
 		int numberOfIterations=0;
