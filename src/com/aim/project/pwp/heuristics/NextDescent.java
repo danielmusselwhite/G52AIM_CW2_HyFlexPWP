@@ -17,14 +17,12 @@ import com.aim.project.pwp.solution.PWPSolution;
 public class NextDescent extends HeuristicOperators implements HeuristicInterface {
 	
 	private final Random oRandom;
-	private final AdjacentSwap perturbationOperator;
 	
 	public NextDescent(Random oRandom) {
 	
 		super();
 		
 		this.oRandom = oRandom;
-		this.perturbationOperator = new AdjacentSwap(oRandom);
 	}
 
 	@Override
@@ -71,8 +69,8 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
-			// move to the neighbouring solution (by means of adjacent swap) then check if this provides a shorter root
-			if(perturbationOperator.apply(candidateSolution, dDepthOfSearch, dIntensityOfMutation)<bestEval) {
+			// move to the neighbouring solution (by means of adjacent swap with index i) then check if this provides a shorter root
+			if(applyPerturbationOperator(candidateSolution, i)<bestEval) {
 				//if it does, accept this solution (clone it to the oSolution)
 				newSolution = candidateSolution.clone();
 				acceptedSolutionCounter++;
@@ -101,11 +99,27 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean usesDepthOfSearch() {
 		return true;
+	}
+	
+	//adjacent swap
+	private double applyPerturbationOperator(PWPSolutionInterface candidateSolution, int index) {
+
+		int[] newSolution = candidateSolution.getSolutionRepresentation().getSolutionRepresentation();
+		int size = newSolution.length;
+		
+		newSolution = swapPoints(newSolution, index, (index+1)%size);	// swapping the two adjacent points
+		
+		
+		// updating to the new solution
+		candidateSolution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
+		
+		// returning the cost of the new solution
+		return candidateSolution.getObjectiveFunctionValue();
 	}
 }

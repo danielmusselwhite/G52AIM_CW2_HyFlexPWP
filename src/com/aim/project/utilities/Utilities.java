@@ -94,4 +94,16 @@ public class Utilities {
 		
 		return al;
 	}
+	
+	public static int[] getArrayOfBitIndexes(int numberOfVariables) {
+		// adding variables into an array
+		int array[] = new int[numberOfVariables];
+		for(int i=0; i<numberOfVariables; i++) {
+			array[i]=i;
+		}
+		
+		// returning the array of variables
+		return array;
+	}
 }
+
