@@ -47,14 +47,10 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		else if(dDepthOfSearch == 1)
 			acceptedSolutionLimit = 6;
 		
-		// candidateSolution so we don't modify the main
-		PWPSolutionInterface newSolution = oSolution.clone();
-		PWPSolutionInterface candidateSolution = oSolution.clone();
-
-		int size = oSolution.getNumberOfLocations()-2; //we can't modify the home nor the depot so -2
-		
 		// initialising solution, it starts with the bestEval
-		double bestEval = newSolution.getObjectiveFunctionValue();
+		double bestEval = oSolution.getObjectiveFunctionValue();
+		
+		int size = oSolution.getNumberOfLocations()-2; //we can't modify the home nor the depot so minus 2 from total
 		
 		//random starting point and calculating the finish point based on that
 		int randomStart = oRandom.nextInt(size);
@@ -66,30 +62,23 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		for(int i=randomStart; i<calculatedFinish; i++) {
 			
 			//stop searching when we have accepted enough solutions to satisfy our depth of search
-			if(acceptedSolutionCounter>=acceptedSolutionLimit)
+			if(acceptedSolutionCounter>acceptedSolutionLimit)
 				break;
 			
-			// move to the neighbouring solution (by means of adjacent swap with index i) then check if this provides a shorter root
-			if(applyPerturbationOperator(candidateSolution, i)<bestEval) {
-				//if it does, accept this solution (clone it to the oSolution)
-				newSolution = candidateSolution.clone();
-				acceptedSolutionCounter++;
-			}
-			//else if it doesn't, deny the solution putting it back to the old solution then continuing
-			else {
-				candidateSolution = newSolution.clone();
-			}
+			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
+			if(applyPerturbationOperator(oSolution, i)>bestEval)
+				applyPerturbationOperator(oSolution, i);
 			
+			// else the cost was strictly improving, accept it
+			else 
+				acceptedSolutionCounter++;
 		}
 		
-		// updating to the new solution
-		oSolution.getSolutionRepresentation().setSolutionRepresentation(newSolution.getSolutionRepresentation().getSolutionRepresentation());
 		
 		// returning the cost of the new solution
 		return oSolution.getObjectiveFunctionValue();
 		
-		
-		
+			
 	}
 
 	@Override
@@ -108,18 +97,16 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 	}
 	
 	//adjacent swap
-	private double applyPerturbationOperator(PWPSolutionInterface candidateSolution, int index) {
+	private double applyPerturbationOperator(PWPSolutionInterface solution, int index) {
 
-		int[] newSolution = candidateSolution.getSolutionRepresentation().getSolutionRepresentation();
+		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
 		int size = newSolution.length;
 		
 		newSolution = swapPoints(newSolution, index, (index+1)%size);	// swapping the two adjacent points
 		
-		
-		// updating to the new solution
-		candidateSolution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
+		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);  // move to the new solution (error checking will be done in the class that uses this by comparing the returned cost with the previous cost)
 		
 		// returning the cost of the new solution
-		return candidateSolution.getObjectiveFunctionValue();
+		return solution.getObjectiveFunctionValue();
 	}
 }
