@@ -1,6 +1,7 @@
 package com.aim.project.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import com.aim.project.pwp.instance.Location;
@@ -117,6 +118,33 @@ public class Utilities {
 		
 		// convert array list to array and return it
 		return convertToArray(al);
+	}
+	
+	public static Boolean arrayContainsValue(int [] arr, int value) {
+		return Arrays.asList(arr).contains(value);
+	}
+	
+	public static int[] shiftArray(int[] arr, int shift) {
+		
+		// if shifting it by more than its length modulo it
+		if(shift>arr.length)
+			shift = shift%arr.length;
+		
+		int[] newArr = new int[arr.length];
+		
+		//shifting first elements prior to shift
+		for(int i=0; i<shift; i++) 
+			newArr[i] = arr[arr.length-shift+i];
+		
+		//shifting elements after the shift
+		int j=0;
+		for(int i=shift; i<arr.length; i++) {
+			newArr[i] = arr[j];
+			j++;
+			
+		}
+		
+		return newArr;			
 	}
 }
 

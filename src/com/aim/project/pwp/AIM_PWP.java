@@ -39,6 +39,8 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	
 	public PWPSolutionInterface oBestSolution;
 	
+	private int iBestSolutionIndex;
+	
 	public PWPInstanceInterface oInstance;
 	
 	private HeuristicInterface[] aoHeuristics;
@@ -101,15 +103,17 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		// TODO - apply heuristic and return the objective value of the candidate solution
 		//			remembering to keep track/update the best solution
 	
+		
+		aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[parent1Index],  this.aoMemoryOfSolutions[parent2Index], this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
 	}
 
 	@Override
 	public String bestSolutionToString() {
 		
-		// TODO return the location IDs of the best solution including DEPOT and HOME locations
+		// DONE return the location IDs of the best solution including DEPOT and HOME locations
 		//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME"
 		
-		this.solutionToString(this.aoMemoryOfSolutions. this.oBestSolution);
+		return this.solutionToString(this.iBestSolutionIndex);
 	}
 
 	@Override
@@ -157,6 +161,40 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// TODO return an array of heuristic IDs based on the heuristic's type.
 
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		
+		switch(type) {
+		
+		case CROSSOVER:
+			
+			// check each heuristic to see if its a crossover and if it is, add its id
+			for(int i=0; i<aoHeuristics.length; i++) 
+				if(aoHeuristics[i].isCrossover())
+					ids.add(i);
+			break;
+			
+			
+		case LOCAL_SEARCH:
+			// check each heuristic to see if its a local search and if it is, add its id
+			for(int i=0; i<aoHeuristics.length; i++) 
+				if(aoHeuristics[i].usesDepthOfSearch())
+					ids.add(i);
+			break;
+			
+			
+		case MUTATION:
+			// check each heuristic to see if its a mutation and if it is, add its id
+			for(int i=0; i<aoHeuristics.length; i++) 
+				if(aoHeuristics[i].usesIntensityOfMutation())
+					ids.add(i);
+			break;
+			
+			
+		default:
+			break;
+		}
+		
+		return Utilities.convertToArray(ids);
 	}
 
 	@Override
@@ -263,9 +301,8 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		// DONE
 		String representation = new String();
 		int[] locations = aoMemoryOfSolutions[index].getSolutionRepresentation().getSolutionRepresentation();
-		
-		
-//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME"
+	
+//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME" 
 		representation += "DEPOT -> ";
 		for(int i=0; i<locations.length; i++) {
 			representation += locations[i];
@@ -285,6 +322,7 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	
 	private void updateBestSolution(int index) {
 		oBestSolution = aoMemoryOfSolutions[index];
+		iBestSolutionIndex = index;
 	}
 	
 	@Override
