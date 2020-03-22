@@ -105,5 +105,18 @@ public class Utilities {
 		// returning the array of variables
 		return array;
 	}
+	
+	
+	public static int[] getArrayOfIndexesWhereElementsDiffer(int[] arr1, int[] arr2) {
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		
+		//for each index, if the element at this index is different in each array, add its index to the array list
+		for(int i=0; i<arr1.length; i++)
+			if(arr1[i]!=arr2[i])
+				al.add(i);
+		
+		// convert array list to array and return it
+		return convertToArray(al);
+	}
 }
 
