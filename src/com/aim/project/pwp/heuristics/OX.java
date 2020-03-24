@@ -24,7 +24,7 @@ public class OX implements XOHeuristicInterface {
 	public double apply(PWPSolutionInterface oSolution, double dDepthOfSearch, double dIntensityOfMutation) {
 		
 		// what to do here?
-			
+		return 0d;
 			
 	}
 
@@ -33,27 +33,7 @@ public class OX implements XOHeuristicInterface {
 	@Override
 	public double apply(PWPSolutionInterface p1, PWPSolutionInterface p2,
 			PWPSolutionInterface c, double depthOfSearch, double intensityOfMutation) {
-		
-
-		// rule is numberOfIterations = 2(n+1) where n = number of 0.2's there are in intensityOfMutation
-		//by dividing IOM by 0.2 you have n
-		//int numberOfIterations = (int) (2*((dIntensityOfMutation)/0.2d)+1);
-		
-		int numberOfIterations=0;
-		
-		if(intensityOfMutation >= 0 && intensityOfMutation<0.2)
-			numberOfIterations = 1;
-		else if(intensityOfMutation >= 0.2 && intensityOfMutation <0.4)
-			numberOfIterations = 2;
-		else if(intensityOfMutation >= 0.4 && intensityOfMutation<0.6)
-			numberOfIterations = 3;
-		else if(intensityOfMutation >= 0.6 && intensityOfMutation<0.8)
-			numberOfIterations = 4;
-		else if(intensityOfMutation >=0.8 && intensityOfMutation<1)
-			numberOfIterations = 5;
-		else if(intensityOfMutation == 1)
-			numberOfIterations = 6;
-		
+	
 		int size = p1.getNumberOfLocations()-2; //we can't modify the home nor the depot so minus 2 from total
 
 		int cutPoint1;
@@ -111,7 +91,7 @@ public class OX implements XOHeuristicInterface {
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return true;
+		return false;
 	}
 
 	@Override

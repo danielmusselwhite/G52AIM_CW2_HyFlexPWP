@@ -48,13 +48,30 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	private ObjectiveFunctionInterface oObjectiveFunction;
 	
 	private final long seed;
+	
+	private Random m_random;
 		
 	public AIM_PWP(long seed) {
 		
 		super(seed);
-
+		this.seed = seed;
 		// TODO - set default memory size and create the array of low-level heuristics
 		
+		m_random = new Random(seed);
+		
+		
+		
+		setMemorySize(2);//default memory size of 2 
+		
+		// setting up array of heuristics
+		aoHeuristics = new HeuristicInterface[7];
+		aoHeuristics[0] = new AdjacentSwap(m_random);
+		aoHeuristics[1] = new InversionMutation(m_random);
+		aoHeuristics[2] = new Reinsertion(m_random);
+		aoHeuristics[3] = new NextDescent(m_random);
+		aoHeuristics[4] = new DavissHillClimbing(m_random);
+		aoHeuristics[5] = new OX(m_random);
+		aoHeuristics[6] = new CX(m_random);
 	}
 	
 	public PWPSolutionInterface getSolution(int index) {
@@ -104,7 +121,10 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		//			remembering to keep track/update the best solution
 	
 		
-		aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[parent1Index],  this.aoMemoryOfSolutions[parent2Index], this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
+		XOHeuristicInterface crossoverHeuristic = (XOHeuristicInterface) aoHeuristics[hIndex];
+		crossoverHeuristic.apply(this.aoMemoryOfSolutions[parent1Index],  this.aoMemoryOfSolutions[parent2Index], this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
+	
+		return this.getFunctionValue(candidateIndex);
 	}
 
 	@Override
@@ -264,9 +284,8 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		String instanceName = "instances" + SEP + "pwp" + SEP + instanceFiles[instanceId] + ".pwp";
 
 		Path path = Paths.get(instanceName);
-		Random random = new Random(seed);
 		PWPInstanceReader oPwpReader = new PWPInstanceReader();
-		oInstance = oPwpReader.readPWPInstance(path, random);
+		oInstance = oPwpReader.readPWPInstance(path, m_random);
 
 		oObjectiveFunction = oInstance.getPWPObjectiveFunction();
 		

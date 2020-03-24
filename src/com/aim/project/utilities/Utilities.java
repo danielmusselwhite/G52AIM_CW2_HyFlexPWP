@@ -121,7 +121,16 @@ public class Utilities {
 	}
 	
 	public static Boolean arrayContainsValue(int [] arr, int value) {
-		return Arrays.asList(arr).contains(value);
+		
+		boolean contains = false;
+		
+		for(int i=0; i<arr.length; i++)
+			if(arr[i]==value) {
+				contains=true;
+				break;
+			}
+		
+		return contains;
 	}
 	
 	public static int[] shiftArray(int[] arr, int shift) {
@@ -146,5 +155,16 @@ public class Utilities {
 		
 		return newArr;			
 	}
+	
+	public static int arrayGetIndexOf(int [] arr, int value) {
+
+		for(int i=0; i<arr.length; i++)
+			if(arr[i]==value) {
+				return i;
+			}
+		
+		return -1;
+	}
+	
 }
 
