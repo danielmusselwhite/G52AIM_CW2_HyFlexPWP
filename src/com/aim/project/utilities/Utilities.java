@@ -133,6 +133,18 @@ public class Utilities {
 		return contains;
 	}
 	
+	public static Boolean arrayListContainsValue(ArrayList<Integer> al, int value) {
+		boolean contains = false;
+		
+		for(int i=0; i<al.size(); i++)
+			if(al.get(i)==value) {
+				contains=true;
+				break;
+			}
+		
+		return contains;
+	}
+	
 	public static int[] shiftArray(int[] arr, int shift) {
 		
 		// if shifting it by more than its length modulo it
@@ -162,7 +174,7 @@ public class Utilities {
 			if(arr[i]==value) {
 				return i;
 			}
-		
+
 		return -1;
 	}
 	

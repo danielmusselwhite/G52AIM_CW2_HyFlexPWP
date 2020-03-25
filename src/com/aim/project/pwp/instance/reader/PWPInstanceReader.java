@@ -18,7 +18,6 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 
 	@Override
 	public PWPInstanceInterface readPWPInstance(Path path, Random random) {
-		System.out.println("ENTERED PWPINSTANCEREADER");
 		BufferedReader bfr;
 		try {
 			bfr = Files.newBufferedReader(path);
@@ -38,11 +37,9 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 			ArrayList<Location> locations = new ArrayList<Location>();
 			String rowLine;
 			while(!(rowLine=bfr.readLine()).contains("EOF")) {
-				System.out.println(rowLine);
 				locations.add(new Location(Double.parseDouble(rowLine.split(" ")[0]), Double.parseDouble(rowLine.split(" ")[1])));
 			}
 				
-			System.out.println("EXITING PWPINSTANCEREADER");
 			
 			return new PWPInstance(locations.size()+2, locations.toArray(new Location[0]), postalOffice, workerAddress, random);
 			

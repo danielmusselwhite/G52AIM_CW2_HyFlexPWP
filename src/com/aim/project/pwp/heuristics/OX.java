@@ -56,11 +56,23 @@ public class OX implements XOHeuristicInterface {
 		
 		int[] child1SolutionRepresentation = new int[size];
 		int[] child2SolutionRepresentation = new int[size];
-		int[] parent1SolutionRepresentation = p1.getSolutionRepresentation().getSolutionRepresentation();
-		int[] parent2SolutionRepresentation = p2.getSolutionRepresentation().getSolutionRepresentation();
+		int[] parent1SolutionRepresentation = p1.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] parent2SolutionRepresentation = p2.getSolutionRepresentation().getSolutionRepresentation().clone();
+		
+		
 		
 		for(int j=0; j<iterations; j++) {
 			
+			System.out.println("OX p1");
+			for(int i=0; i<parent1SolutionRepresentation.length; i++) {
+				System.out.print(parent1SolutionRepresentation[i]);
+			}
+			System.out.println();
+			System.out.println("OX p2");
+			for(int i=0; i<parent2SolutionRepresentation.length; i++) {
+				System.out.print(parent2SolutionRepresentation[i]);
+			}
+			System.out.println();
 			
 			// pick two random cut points while both the points are the first and the last element as nothing will change or whilst they are the same element
 			do {
@@ -70,7 +82,7 @@ public class OX implements XOHeuristicInterface {
 				// setting it so cutPoint1 is the smaller and cutPoint2 is the bigger
 				cutPoint1 = point1<point2 ? point1 : point2;
 				cutPoint2 = point2>point1 ? point2 : point1;
-			} while((cutPoint1 == 0 && cutPoint2 == size-1) || cutPoint1 == cutPoint2);
+			} while((cutPoint1 == 0 && cutPoint2 == size-1));// || cutPoint1 == cutPoint2);
 			
 			
 			
@@ -78,61 +90,179 @@ public class OX implements XOHeuristicInterface {
 			
 			child1SolutionRepresentation = new int[size];
 			child2SolutionRepresentation = new int[size];
-			parent2SolutionRepresentation = Utilities.shiftArray(parent2SolutionRepresentation, cutPoint2); //shifting it by cutPoint2 so it is read in that order
 			
+			System.out.println(cutPoint1+" "+cutPoint2);
 			
 			//GENERATING CHILD 1
 			
-			// Copy parent 1 middle into child
-			for(int i=cutPoint1; i<cutPoint2; i++) {
-				child1SolutionRepresentation[i] = parent1SolutionRepresentation[i];
+			//getting the symbols from the middle of parent 1 between the 2 cutpoints
+			ArrayList<Integer> child1Parent1Symbols = new ArrayList<Integer>();
+			for(int i=cutPoint1; i<=cutPoint2; i++) {
+				child1Parent1Symbols.add(parent1SolutionRepresentation[i]);
 			}
 			
-			//get symbols from parent 2 starting from second cut point
-			int[] parent2Symbols = new int[cutPoint2 - cutPoint1];
+
+			System.out.println("OX c1 p1 symbols");
+			for(int i=0; i<child1Parent1Symbols.size(); i++) {
+				System.out.print(child1Parent1Symbols.get(i));
+			}
+			System.out.println();
 			
-			// for each symbol from parent 2
-			for(int i=0; i<parent2Symbols.length ;i++) {
-				//if the child doesn't contain this value already (its not from parent 1 middle)
-				if(!Utilities.arrayContainsValue(child1SolutionRepresentation, parent2Symbols[i]))
-					parent2Symbols[i] = parent2SolutionRepresentation[i]; //adding this symbol to the parent2Symbols
+			
+			//get symbols from parent 2 starting from second cut point
+			ArrayList<Integer> child1Parent2Symbols = new ArrayList<Integer>();
+			for(int i=cutPoint2; i<parent2SolutionRepresentation.length ;i++) {
+				if(!Utilities.arrayListContainsValue(child1Parent1Symbols, parent2SolutionRepresentation[i]))
+					child1Parent2Symbols.add(parent2SolutionRepresentation[i]);
+					
+			}
+			for(int i=0; i<cutPoint2; i++) {
+				if(!Utilities.arrayListContainsValue(child1Parent1Symbols, parent2SolutionRepresentation[i]))
+					child1Parent2Symbols.add(parent2SolutionRepresentation[i]);
 					
 			}
 			
-			// for each in the parent 2 symbols, wrap them around the child in order from the second cutpoint
-			for(int i=0; i<parent2Symbols.length; i++) {
-				child1SolutionRepresentation[(i+cutPoint2)%size] = parent2Symbols[i];
+			System.out.println("OX c1 p2 symbols");
+			for(int i=0; i<child1Parent2Symbols.size(); i++) {
+				System.out.print(child1Parent2Symbols.get(i));
 			}
+			System.out.println();
+			
+			//copying the middle into it
+			for(int i=cutPoint1; i<=cutPoint2; i++) {
+				child1SolutionRepresentation[i] = child1Parent1Symbols.get(i-cutPoint1);
+			}
+			
+			System.out.println("OX c1 1");
+			for(int i=0; i<child1SolutionRepresentation.length; i++) {
+				System.out.print(child1SolutionRepresentation[i]);
+			}
+			System.out.println();
+			
+			//copying the sides into it
+			{
+				// index used for parent 2 symbol
+				int k=0;
+				
+				for(int i=cutPoint2+1; i<child1SolutionRepresentation.length; i++, k++) {
+					child1SolutionRepresentation[i] = child1Parent2Symbols.get(k);
+				}
+				
+				System.out.println("OX c1 2");
+				for(int i=0; i<child1SolutionRepresentation.length; i++) {
+					System.out.print(child1SolutionRepresentation[i]);
+				}
+				System.out.println();
+				
+				for(int i=0; i<cutPoint1; i++, k++) {
+					child1SolutionRepresentation[i] = child1Parent2Symbols.get(k);
+				}
+				
+			}
+			
+			System.out.println("OX c1 3");
+			for(int i=0; i<child1SolutionRepresentation.length; i++) {
+				System.out.print(child1SolutionRepresentation[i]);
+			}
+			System.out.println();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			
 			
 			//GERNEATING CHILD 2
-			// Copy parent 2 middle into child
-			for(int i=cutPoint1; i<cutPoint2; i++) {
-				child2SolutionRepresentation[i] = parent2SolutionRepresentation[i];
+			
+			//getting the symbols from the middle of parent 2 between the 2 cutpoints
+			ArrayList<Integer> child2Parent2Symbols = new ArrayList<Integer>();
+			for(int i=cutPoint1; i<=cutPoint2; i++) {
+				child2Parent2Symbols.add(parent2SolutionRepresentation[i]);
 			}
 			
-			//get symbols from parent 1 starting from second cut point
-			int[] parent1Symbols = new int[cutPoint2 - cutPoint1];
+
+			System.out.println("OX c2 p2 symbols");
+			for(int i=0; i<child2Parent2Symbols.size(); i++) {
+				System.out.print(child2Parent2Symbols.get(i));
+			}
+			System.out.println();
 			
-			// for each symbol from parent 1
-			for(int i=0; i<parent1Symbols.length ;i++) {
-				//if the child doesn't contain this value already (its not from parent 2 middle)
-				if(!Utilities.arrayContainsValue(child2SolutionRepresentation, parent1Symbols[i]))
-					parent1Symbols[i] = parent1SolutionRepresentation[i]; //adding this symbol to the parent1Symbols
+			
+			//get symbols from parent 1 starting from second cut point
+			ArrayList<Integer> child2Parent1Symbols = new ArrayList<Integer>();
+			for(int i=cutPoint2; i<parent1SolutionRepresentation.length ;i++) {
+				if(!Utilities.arrayListContainsValue(child2Parent2Symbols, parent1SolutionRepresentation[i]))
+					child2Parent1Symbols.add(parent1SolutionRepresentation[i]);
+					
+			}
+			for(int i=0; i<cutPoint2; i++) {
+				if(!Utilities.arrayListContainsValue(child2Parent2Symbols, parent1SolutionRepresentation[i]))
+					child2Parent1Symbols.add(parent1SolutionRepresentation[i]);
 					
 			}
 			
-			// for each in the parent 2 symbols, wrap them around the child in order from the second cutpoint
-			for(int i=0; i<parent1Symbols.length; i++) {
-				child2SolutionRepresentation[(i+cutPoint2)%size] = parent1Symbols[i];
+			System.out.println("OX c2 p1 symbols");
+			for(int i=0; i<child2Parent1Symbols.size(); i++) {
+				System.out.print(child2Parent1Symbols.get(i));
+			}
+			System.out.println();
+			
+			//copying the middle into it
+			for(int i=cutPoint1; i<=cutPoint2; i++) {
+				child2SolutionRepresentation[i] = child2Parent2Symbols.get(i-cutPoint1);
 			}
 			
-			//setting the parents for the next iteration to be the children
-			parent1SolutionRepresentation = child1SolutionRepresentation;
-			parent2SolutionRepresentation = child2SolutionRepresentation;
+			System.out.println("OX c2 1");
+			for(int i=0; i<child2SolutionRepresentation.length; i++) {
+				System.out.print(child2SolutionRepresentation[i]);
+			}
+			System.out.println();
+			
+			//copying the sides into it
+			{
+				// index used for parent 2 symbol
+				int k=0;
+				
+				for(int i=cutPoint2+1; i<child2SolutionRepresentation.length; i++, k++) {
+					child2SolutionRepresentation[i] = child2Parent1Symbols.get(k);
+				}
+				
+				System.out.println("OX c2 2");
+				for(int i=0; i<child2SolutionRepresentation.length; i++) {
+					System.out.print(child2SolutionRepresentation[i]);
+				}
+				System.out.println();
+				
+				for(int i=0; i<cutPoint1; i++, k++) {
+					child2SolutionRepresentation[i] = child2Parent1Symbols.get(k);
+				}
+				
+			}
+			
+			System.out.println("OX c2 3");
+			for(int i=0; i<child2SolutionRepresentation.length; i++) {
+				System.out.print(child2SolutionRepresentation[i]);
+			}
+			System.out.println();
+			
+			
 		}
+			
+			
+			
+			
 		
 		//setting the child to be randomly 1 of the 2 generated children (50/50 chance of being either)
 		if(oRandom.nextDouble()>0.5)
@@ -140,6 +270,12 @@ public class OX implements XOHeuristicInterface {
 		else
 			c.getSolutionRepresentation().setSolutionRepresentation(child2SolutionRepresentation);  // move to the new solution	
 	
+		System.out.println("OX");
+		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]);
+		}
+		System.out.println();
+		
 		return c.getObjectiveFunctionValue();
 	}
 
@@ -150,7 +286,7 @@ public class OX implements XOHeuristicInterface {
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return false;
+		return true;
 	}
 
 	@Override

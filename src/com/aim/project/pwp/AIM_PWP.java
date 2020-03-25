@@ -269,8 +269,18 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		double initialValue = oObjectiveFunction.getObjectiveFunctionValue(sr);
 		
 		aoMemoryOfSolutions[index] = new PWPSolution(sr, initialValue);
-		//if(this.getFunctionValue(index)<this.getBestSolutionValue())
-		this.updateBestSolution(index);
+		
+		//if there is a best solution..
+		if(oBestSolution!=null) {
+			//check if this one is better
+			if(this.getFunctionValue(index)<this.getBestSolutionValue())
+				this.updateBestSolution(index);
+		}
+		// if there isn't a best solution yet then this is the first and hence the current one to beat
+		else {
+			this.updateBestSolution(index);
+		}
+		
 	}
 
 	// DONE implement the instance reader that this method uses

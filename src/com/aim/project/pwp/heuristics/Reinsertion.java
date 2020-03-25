@@ -39,7 +39,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 		else if(intensityOfMutation == 1)
 			numberOfIterations = 6;
 		
-		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
+		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
 		int size = newSolution.length;
 		
 		for(int i=0; i<numberOfIterations; i++) {
@@ -60,6 +60,12 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 		
 		// updating to the new solution
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
+		
+		System.out.println("Reinsertion");
+		for(int i=0; i<solution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+			System.out.print(solution.getSolutionRepresentation().getSolutionRepresentation()[i]);
+		}
+		System.out.println();
 		
 		// returning the cost of the new solution
 		return solution.getObjectiveFunctionValue();

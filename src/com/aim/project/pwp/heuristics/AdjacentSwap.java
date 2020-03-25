@@ -40,7 +40,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 		else if(intensityOfMutation == 1)
 			numberOfIterations = 32;
 		
-		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
+		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
 		int size = newSolution.length;
 		
 		for(int i=0; i<numberOfIterations; i++) {
@@ -51,6 +51,11 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 			newSolution = swapPoints(newSolution, i1, i2);	// swapping the two adjacent points
 		}
 		
+		System.out.println("AdjacentSwap");
+		for(int i=0; i<newSolution.length; i++) {
+			System.out.print(newSolution[i]);
+		}
+		System.out.println();
 		
 		// updating to the new solution
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);

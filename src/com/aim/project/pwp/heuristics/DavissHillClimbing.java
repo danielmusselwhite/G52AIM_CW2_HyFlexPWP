@@ -75,6 +75,12 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 			
 		}	
 		
+		System.out.println("Davis");
+		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]);
+		}
+		System.out.println();
+		
 		// returning the cost of the new solution
 		return oSolution.getObjectiveFunctionValue();
 		
@@ -88,7 +94,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return true;
+		return false;
 	}
 
 	@Override

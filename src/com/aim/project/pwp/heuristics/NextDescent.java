@@ -54,15 +54,14 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		
 		//random starting point and calculating the finish point based on that
 		int randomStart = oRandom.nextInt(size);
-		int calculatedFinish = (randomStart-1)%size;
 		
 		int acceptedSolutionCounter = 0;
 		
 		// for each value in the solution..
-		for(int i=randomStart; i<calculatedFinish; i++) {
+		for(int i=randomStart; i<size; i++) {
 			
 			//stop searching when we have accepted enough solutions to satisfy our depth of search
-			if(acceptedSolutionCounter>acceptedSolutionLimit)
+			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
@@ -74,6 +73,28 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				acceptedSolutionCounter++;
 		}
 		
+
+		// for each value in the solution..
+		for(int i=0; i<randomStart; i++) {
+			
+			//stop searching when we have accepted enough solutions to satisfy our depth of search
+			if(acceptedSolutionCounter>=acceptedSolutionLimit)
+				break;
+			
+			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
+			if(applyPerturbationOperator(oSolution, i)>bestEval)
+				applyPerturbationOperator(oSolution, i);
+			
+			// else the cost was strictly improving, accept it
+			else 
+				acceptedSolutionCounter++;
+		}
+		
+		System.out.println("Next Descent");
+		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]);
+		}
+		System.out.println();
 		
 		// returning the cost of the new solution
 		return oSolution.getObjectiveFunctionValue();
@@ -88,7 +109,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return true;
+		return false;
 	}
 
 	@Override

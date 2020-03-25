@@ -47,28 +47,30 @@ public class CX implements XOHeuristicInterface {
 		else if(intensityOfMutation == 1)
 			iterations = 6;
 		
-		
-		
-		int[] parent1Solution = p1.getSolutionRepresentation().getSolutionRepresentation();
-		int[] parent2Solution = p2.getSolutionRepresentation().getSolutionRepresentation();
-		int[] childSolution1 = parent1Solution;
-		int[] childSolution2 = parent2Solution;
+
+		int[] parent1Solution = p1.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] parent2Solution = p2.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] childSolution1 = parent1Solution.clone();
+		int[] childSolution2 = parent2Solution.clone();
 
 		for(int i=0; i<iterations; i++){
+			
 			//GENERATING CHILD 1
 			
 			// defaulting the child1 solution to have all the values from parent 2
-			childSolution1 = parent2Solution;
+			childSolution1 = parent2Solution.clone();
 			
 			
 			//picking a random index to be the first one for us to explore
 			int nextIndex = oRandom.nextInt(p1.getSolutionRepresentation().getSolutionRepresentation().length);
+
 			//setting up the cycle the start point for the cycle
 			ArrayList<Integer> cycle = new ArrayList<Integer>();
 			
 			// Finding the cycle and adding it to the child
 			//whilst the cycle doesn't contain the next element..
-			while(!cycle.contains(parent1Solution[nextIndex])) { 
+			while(!Utilities.arrayListContainsValue(cycle, parent1Solution[nextIndex])) { 
+				
 				// add this element to the child at its index
 				childSolution1[nextIndex] = parent1Solution[nextIndex];
 				// add this element to the cycle
@@ -76,14 +78,12 @@ public class CX implements XOHeuristicInterface {
 				
 				//getting where the element at this index is in parent two, in parent one.
 				nextIndex = Utilities.arrayGetIndexOf(parent1Solution, parent2Solution[nextIndex]);
-
 			}
-			
 			
 			//GENERATING CHILD 2
 			
 			// defaulting the child1 solution to have all the values from parent 2
-			childSolution2 = parent1Solution;
+			childSolution2 = parent1Solution.clone();
 			
 			
 			//picking a random index to be the first one for us to explore
@@ -93,7 +93,7 @@ public class CX implements XOHeuristicInterface {
 			
 			// Finding the cycle and adding it to the child
 			//whilst the cycle doesn't contain the next element..
-			while(!cycle.contains(parent2Solution[nextIndex])) { 
+			while(!Utilities.arrayListContainsValue(cycle, parent2Solution[nextIndex])) { 
 				// add this element to the child at its index
 				childSolution2[nextIndex] = parent2Solution[nextIndex];
 				// add this element to the cycle
@@ -115,6 +115,12 @@ public class CX implements XOHeuristicInterface {
 		else
 			c.getSolutionRepresentation().setSolutionRepresentation(childSolution2);  // move to the new solution	
 	
+		System.out.println("CX");
+		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]);
+		}
+		System.out.println();
+		
 		return c.getObjectiveFunctionValue();
 	}
 
@@ -125,7 +131,7 @@ public class CX implements XOHeuristicInterface {
 
 	@Override
 	public boolean usesIntensityOfMutation() {
-		return false;
+		return true;
 	}
 
 	@Override
