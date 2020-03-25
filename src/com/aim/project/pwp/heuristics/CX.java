@@ -22,7 +22,7 @@ public class CX implements XOHeuristicInterface {
 
 	@Override
 	public double apply(PWPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
-		return 0d;
+		return solution.getObjectiveFunctionValue();
 	}
 
 	@Override
@@ -104,13 +104,11 @@ public class CX implements XOHeuristicInterface {
 
 			}
 			
-			//setting the parents to be the children
+			//setting the parents for the next iteration to be the children
 			parent1Solution = childSolution1;
 			parent2Solution = childSolution2;
 		}
-		
-		
-		
+
 		//setting the child to be randomly 1 of the 2 generated children (50/50 chance of being either)
 		if(oRandom.nextDouble()>0.5)
 			c.getSolutionRepresentation().setSolutionRepresentation(childSolution1);  // move to the new solution

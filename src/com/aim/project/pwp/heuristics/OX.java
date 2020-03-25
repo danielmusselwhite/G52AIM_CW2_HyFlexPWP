@@ -22,9 +22,7 @@ public class OX implements XOHeuristicInterface {
 
 	@Override
 	public double apply(PWPSolutionInterface oSolution, double dDepthOfSearch, double dIntensityOfMutation) {
-		
-		// what to do here?
-		return 0d;
+		return oSolution.getObjectiveFunctionValue();
 			
 	}
 
@@ -67,7 +65,7 @@ public class OX implements XOHeuristicInterface {
 			// pick two random cut points while both the points are the first and the last element as nothing will change or whilst they are the same element
 			do {
 				int point1 = oRandom.nextInt(size);
-				int point2 = oRandom.nextInt();
+				int point2 = oRandom.nextInt(size);
 				
 				// setting it so cutPoint1 is the smaller and cutPoint2 is the bigger
 				cutPoint1 = point1<point2 ? point1 : point2;

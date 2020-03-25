@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.aim.project.pwp.interfaces.ObjectiveFunctionInterface;
+import com.aim.project.pwp.solution.PWPSolution;
 import com.aim.project.utilities.Utilities;
 
 public class HeuristicOperators {
@@ -47,7 +48,7 @@ public class HeuristicOperators {
 	
 	//setting the values in the solution to the subarray between the limiting index values
 	public int[] setValuesWithinRange(int[] solution, int[] subarray, int startIndex, int endIndex) {
-		for(int offset=0; offset+startIndex<=endIndex; offset++) {
+		for(int offset=0; offset+startIndex<endIndex; offset++) {
 			solution[startIndex + offset]=subarray[offset];
 		}
 		return solution;
@@ -79,5 +80,6 @@ public class HeuristicOperators {
 		//convert back to int array and return
 		return Utilities.convertToArray(newSolution);
 	}
+	
 }
 

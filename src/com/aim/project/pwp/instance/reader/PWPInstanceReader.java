@@ -18,7 +18,7 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 
 	@Override
 	public PWPInstanceInterface readPWPInstance(Path path, Random random) {
-
+		System.out.println("ENTERED PWPINSTANCEREADER");
 		BufferedReader bfr;
 		try {
 			bfr = Files.newBufferedReader(path);
@@ -26,17 +26,25 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 			String name = bfr.readLine();
 			String comment = bfr.readLine();
 			bfr.readLine(); //ignore "POSTAL_OFFICE"
-			Location postalOffice = new Location(Double.parseDouble(bfr.readLine()), Double.parseDouble(bfr.readLine()));
+			String poLine = bfr.readLine();
+			Location postalOffice = new Location(Double.parseDouble(poLine.split(" ")[0]), Double.parseDouble(poLine.split(" ")[1]));
 			bfr.readLine(); //ignore "WORKER_ADDRESS"
-			Location workerAddress = new Location(Double.parseDouble(bfr.readLine()), Double.parseDouble(bfr.readLine()));
+			String waLine = bfr.readLine();
+			Location workerAddress = new Location(Double.parseDouble(waLine.split(" ")[0]), Double.parseDouble(waLine.split(" ")[1]));
+			
+			bfr.readLine(); //ignore "POSTAL_ADDRESSES"
 			
 			//getting the arraylist of locations
 			ArrayList<Location> locations = new ArrayList<Location>();
-			String x,y;
-			while((x=bfr.readLine())!="EOF" && (y=bfr.readLine())!="EOF")
-				locations.add(new Location(Double.parseDouble(x), Double.parseDouble(y)));
-
-			return new PWPInstance(locations.size(), locations.toArray(new Location[0]), postalOffice, workerAddress, random);
+			String rowLine;
+			while(!(rowLine=bfr.readLine()).contains("EOF")) {
+				System.out.println(rowLine);
+				locations.add(new Location(Double.parseDouble(rowLine.split(" ")[0]), Double.parseDouble(rowLine.split(" ")[1])));
+			}
+				
+			System.out.println("EXITING PWPINSTANCEREADER");
+			
+			return new PWPInstance(locations.size()+2, locations.toArray(new Location[0]), postalOffice, workerAddress, random);
 			
 		} catch (IOException e) {
 

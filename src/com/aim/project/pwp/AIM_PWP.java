@@ -22,9 +22,11 @@ import com.aim.project.pwp.interfaces.HeuristicInterface;
 import com.aim.project.pwp.interfaces.ObjectiveFunctionInterface;
 import com.aim.project.pwp.interfaces.PWPInstanceInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
+import com.aim.project.pwp.interfaces.SolutionRepresentationInterface;
 import com.aim.project.pwp.interfaces.Visualisable;
 import com.aim.project.pwp.interfaces.XOHeuristicInterface;
 import com.aim.project.pwp.solution.PWPSolution;
+import com.aim.project.pwp.solution.SolutionRepresentation;
 import com.aim.project.utilities.Utilities;
 
 import AbstractClasses.ProblemDomain;
@@ -121,6 +123,11 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		//			remembering to keep track/update the best solution
 	
 		
+		SolutionRepresentation sr = (SolutionRepresentation) oInstance.createSolution(InitialisationMode.RANDOM).getSolutionRepresentation();
+		double initialValue = oObjectiveFunction.getObjectiveFunctionValue(sr);
+		
+		aoMemoryOfSolutions[candidateIndex] = new PWPSolution(sr,initialValue);
+		
 		XOHeuristicInterface crossoverHeuristic = (XOHeuristicInterface) aoHeuristics[hIndex];
 		crossoverHeuristic.apply(this.aoMemoryOfSolutions[parent1Index],  this.aoMemoryOfSolutions[parent2Index], this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
 	
@@ -156,16 +163,7 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	@Override
 	public double getBestSolutionValue() {
 		// DONE
-		//get the value of the first solution
-		double bestSolutionValue = getFunctionValue(0);
-		//go through each of the other solutions iteratively and check if they produce a better solution value
-		for(int i=1; i<getNumberOfInstances(); i++) {
-			double thisSolutionValue = getFunctionValue(i);
-			if(thisSolutionValue<bestSolutionValue)
-				bestSolutionValue = thisSolutionValue;
-		}
-			
-		return bestSolutionValue;
+		return oBestSolution.getObjectiveFunctionValue();
 	}
 	
 	@Override
@@ -258,20 +256,20 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	public int getNumberOfInstances() {
 
 		// DONE return the number of available instances
-		return aoMemoryOfSolutions.length;
+		return instanceFiles.length;
 	}
 
 	@Override
 	public void initialiseSolution(int index) {
 		
-		// TODO - initialise a solution in index 'index' 
+		// DONE - initialise a solution in index 'index' 
 		// 		making sure that you also update the best solution!
 		
-		//PWPInstanceReader oPwpReader = new PWPInstanceReader();
-		//aoMemoryOfSolutions[index]= oPwpReader;
-				
+		SolutionRepresentation sr = (SolutionRepresentation) oInstance.createSolution(InitialisationMode.RANDOM).getSolutionRepresentation();
+		double initialValue = oObjectiveFunction.getObjectiveFunctionValue(sr);
 		
-		this.loadInstance(index);
+		aoMemoryOfSolutions[index] = new PWPSolution(sr, initialValue);
+		//if(this.getFunctionValue(index)<this.getBestSolutionValue())
 		this.updateBestSolution(index);
 	}
 
@@ -292,6 +290,8 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		for(HeuristicInterface h : aoHeuristics) {
 			h.setObjectiveFunction(oObjectiveFunction);
 		}
+		
+		
 	}
 
 	@Override
@@ -305,12 +305,14 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// if f1 is less than or equal to 1 ignore it
 		if(f>1) {
-			
-			//copy over solutions into new array of size f then overwrite the memory once done
-			PWPSolutionInterface[] newMemory = new PWPSolutionInterface[f];
-			for(int i=0; i<getNumberOfInstances(); i++)
+		//copy over solutions into new array of size f then overwrite the memory once done
+		PWPSolutionInterface[] newMemory = new PWPSolutionInterface[f];
+		
+		if(aoMemoryOfSolutions!=null) 
+			for(int i=0; i<aoMemoryOfSolutions.length && i<f; i++)
 				newMemory[i] = aoMemoryOfSolutions[i];
-			aoMemoryOfSolutions = newMemory;
+			
+		aoMemoryOfSolutions = newMemory;
 		}
 	}
 

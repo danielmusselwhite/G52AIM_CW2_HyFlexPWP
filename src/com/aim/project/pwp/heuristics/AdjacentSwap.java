@@ -2,6 +2,7 @@ package com.aim.project.pwp.heuristics;
 
 import java.util.Random;
 
+import com.aim.project.pwp.PWPObjectiveFunction;
 import com.aim.project.pwp.interfaces.HeuristicInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
 

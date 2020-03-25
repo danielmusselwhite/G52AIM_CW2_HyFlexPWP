@@ -23,7 +23,7 @@ public class PWPObjectiveFunction implements ObjectiveFunctionInterface {
 		double totalCost=0;
 		
 		// if this is the first run (i.e. lastPermutation doesn't exist yet) calculate distance between ALL cities
-		if(lastPermutation == null) {
+		//if(lastPermutation == null) {
 			// (SIMPLE EVALUATION) 
 
 			for(int i=0; i<currentSolution.length; i++) {
@@ -37,8 +37,9 @@ public class PWPObjectiveFunction implements ObjectiveFunctionInterface {
 					totalCost+=getCost(currentSolution[i], currentSolution[i-1]);
 			}
 			
-		}
+		//}
 		
+			/*
 		// else there was a last permutation, we can do delta evaluation
 		else {
 			// (DELTA EVALUATION)
@@ -98,7 +99,7 @@ public class PWPObjectiveFunction implements ObjectiveFunctionInterface {
 		//store the last cost and last permutation
 		lastCost = totalCost;
 		lastPermutation = currentSolution;
-		
+		*/
 		return totalCost;
 	}
 	

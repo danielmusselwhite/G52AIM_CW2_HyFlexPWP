@@ -55,8 +55,8 @@ public class PWPInstance implements PWPInstanceInterface {
 			
 		case RANDOM:
 			// creating the initial permutation representation, in order
-			permutationRepresentation = new int[iNumberOfLocations];
-			for(int i=0; i<iNumberOfLocations; i++)
+			permutationRepresentation = new int[iNumberOfLocations-2];
+			for(int i=0; i<iNumberOfLocations-2; i++)
 				permutationRepresentation[i]=i;
 			// shuffling into a random permutation
 			permutationRepresentation = Utilities.shuffleArray(permutationRepresentation, oRandom);
@@ -110,7 +110,7 @@ public class PWPInstance implements PWPInstanceInterface {
 		
 		// for each index in the oSolutions representation
 		ArrayList<Location> currentSolution = new ArrayList<Location>();
-		for(int i=0; i<oSolution.getNumberOfLocations(); i++) {
+		for(int i=0; i<oSolution.getNumberOfLocations()-2; i++) {
 			//get the location represented by this index and add it to the array list
 			int thisLocationsIndex = oSolution.getSolutionRepresentation().getSolutionRepresentation()[i];
 			Location thisLocation = aoLocations[thisLocationsIndex];
