@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.aim.project.pwp.interfaces.ObjectiveFunctionInterface;
+import com.aim.project.pwp.interfaces.SolutionRepresentationInterface;
 import com.aim.project.pwp.solution.PWPSolution;
 import com.aim.project.utilities.Utilities;
 
@@ -80,6 +81,16 @@ public class HeuristicOperators {
 		//convert back to int array and return
 		return Utilities.convertToArray(newSolution);
 	}
+	
+	
+	public double getSolutionCost(SolutionRepresentationInterface solutionRepresentation) {
+		return oObjectiveFunction.getObjectiveFunctionValue(solutionRepresentation);
+	}
+	
+	public ObjectiveFunctionInterface getObjectiveFunction() {
+		return oObjectiveFunction;
+	}
+	
 	
 }
 

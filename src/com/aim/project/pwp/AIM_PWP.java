@@ -97,7 +97,7 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		// candidateSolution so we don't modify the main
 		this.copySolution(currentIndex, candidateIndex);
 
-		this.aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[candidateIndex], 0.5d, 0.5d);
+		this.aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
 		
 		// if this candidate is an improvement, accept it 
 		if(this.getFunctionValue(candidateIndex)<this.getFunctionValue(currentIndex)) {
@@ -185,26 +185,26 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		case CROSSOVER:
 			
-			// check each heuristic to see if its a crossover and if it is, add its id
-			for(int i=0; i<aoHeuristics.length; i++) 
-				if(aoHeuristics[i].isCrossover())
-					ids.add(i);
+			// adding OX and CX
+			ids.add(5);
+			ids.add(6);
 			break;
 			
 			
 		case LOCAL_SEARCH:
-			// check each heuristic to see if its a local search and if it is, add its id
-			for(int i=0; i<aoHeuristics.length; i++) 
-				if(aoHeuristics[i].usesDepthOfSearch())
-					ids.add(i);
+			
+			// adding next descent and davis bit
+			ids.add(3);
+			ids.add(4);
 			break;
 			
 			
 		case MUTATION:
-			// check each heuristic to see if its a mutation and if it is, add its id
-			for(int i=0; i<aoHeuristics.length; i++) 
-				if(aoHeuristics[i].usesIntensityOfMutation())
-					ids.add(i);
+
+			//adding adjacentSwap, InversionMutation and Reinsertion
+			ids.add(0);
+			ids.add(1);
+			ids.add(2);
 			break;
 			
 			

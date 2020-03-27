@@ -26,10 +26,11 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 			String comment = bfr.readLine();
 			bfr.readLine(); //ignore "POSTAL_OFFICE"
 			String poLine = bfr.readLine();
-			Location postalOffice = new Location(Double.parseDouble(poLine.split(" ")[0]), Double.parseDouble(poLine.split(" ")[1]));
+	
+			Location postalOffice = new Location(Double.parseDouble(poLine.split("[	 ]+")[0]), Double.parseDouble(poLine.split("[	 ]+")[1]));
 			bfr.readLine(); //ignore "WORKER_ADDRESS"
 			String waLine = bfr.readLine();
-			Location workerAddress = new Location(Double.parseDouble(waLine.split(" ")[0]), Double.parseDouble(waLine.split(" ")[1]));
+			Location workerAddress = new Location(Double.parseDouble(waLine.split("[	 ]+")[0]), Double.parseDouble(waLine.split("[	 ]+")[1]));
 			
 			bfr.readLine(); //ignore "POSTAL_ADDRESSES"
 			
@@ -37,7 +38,7 @@ public class PWPInstanceReader implements PWPInstanceReaderInterface {
 			ArrayList<Location> locations = new ArrayList<Location>();
 			String rowLine;
 			while(!(rowLine=bfr.readLine()).contains("EOF")) {
-				locations.add(new Location(Double.parseDouble(rowLine.split(" ")[0]), Double.parseDouble(rowLine.split(" ")[1])));
+				locations.add(new Location(Double.parseDouble(rowLine.split("[	 ]+")[0]), Double.parseDouble(rowLine.split("[	 ]+")[1])));
 			}
 				
 			

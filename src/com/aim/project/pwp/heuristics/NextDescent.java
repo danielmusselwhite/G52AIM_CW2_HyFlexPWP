@@ -90,14 +90,16 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				acceptedSolutionCounter++;
 		}
 		
-		System.out.println("Next Descent");
-		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]);
-		}
-		System.out.println();
+		//oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
 		
+//		System.out.println("Next Descent");
+//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
+//		}
+//		System.out.println();
+//		
 		// returning the cost of the new solution
-		return oSolution.getObjectiveFunctionValue();
+		return this.getSolutionCost(oSolution.getSolutionRepresentation());
 		
 			
 	}
@@ -128,6 +130,6 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);  // move to the new solution (error checking will be done in the class that uses this by comparing the returned cost with the previous cost)
 		
 		// returning the cost of the new solution
-		return solution.getObjectiveFunctionValue();
+		return this.getSolutionCost(solution.getSolutionRepresentation());
 	}
 }

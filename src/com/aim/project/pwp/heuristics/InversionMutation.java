@@ -72,14 +72,16 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 		// updating to the new solution
 		oSolution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
 		
-		System.out.println("Inversion");
-		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]);
-		}
-		System.out.println();
+		oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
+		
+//		System.out.println("Inversion");
+//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
+//		}
+//		System.out.println();
 		
 		// returning the cost of the new solution
-		return oSolution.getObjectiveFunctionValue();
+		return this.getSolutionCost(oSolution.getSolutionRepresentation());
 	}
 	
 	@Override

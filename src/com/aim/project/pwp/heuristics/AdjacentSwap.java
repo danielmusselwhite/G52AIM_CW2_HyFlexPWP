@@ -43,25 +43,50 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
 		int size = newSolution.length;
 		
+		// c = objectiveFunction
+		double c = this.getSolutionCost(solution.getSolutionRepresentation());
+		
 		for(int i=0; i<numberOfIterations; i++) {
 
 			int i1 = oRandom.nextInt(size);	// pick random point
 			int i2 = (i1+1)%size;			// adjacent point AFTER this point (circular)
-			
+//			
+//			if(i1-1<0)
+//				c-=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+//			else
+//				c-=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i1-1]);
+//			if(i2+1>newSolution.length-1)
+//				c-=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+//			else
+//				c-=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
+//			
 			newSolution = swapPoints(newSolution, i1, i2);	// swapping the two adjacent points
+			
+//			if(i1-1<0)
+//				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+//			else
+//				c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i1-1]);
+//			if(i2+1>newSolution.length-1)
+//				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+//			else
+//				c+=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
+			
 		}
 		
-		System.out.println("AdjacentSwap");
-		for(int i=0; i<newSolution.length; i++) {
-			System.out.print(newSolution[i]);
-		}
-		System.out.println();
-		
+//		
+//		System.out.println("AdjacentSwap");
+//		for(int i=0; i<newSolution.length; i++) {
+//			System.out.print(newSolution[i]+"-");
+//		}
+//		System.out.println();
+//		
 		// updating to the new solution
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
 		
+		solution.setObjectiveFunctionValue(this.getSolutionCost(solution.getSolutionRepresentation()));
+		
 		// returning the cost of the new solution
-		return solution.getObjectiveFunctionValue();
+		return this.getSolutionCost(solution.getSolutionRepresentation());
 	}
 
 	@Override

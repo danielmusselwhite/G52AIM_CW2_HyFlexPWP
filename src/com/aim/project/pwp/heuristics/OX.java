@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.aim.project.pwp.interfaces.ObjectiveFunctionInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
+import com.aim.project.pwp.interfaces.SolutionRepresentationInterface;
 import com.aim.project.pwp.interfaces.XOHeuristicInterface;
 import com.aim.project.utilities.Utilities;
 
@@ -63,17 +64,6 @@ public class OX implements XOHeuristicInterface {
 		
 		for(int j=0; j<iterations; j++) {
 			
-			System.out.println("OX p1");
-			for(int i=0; i<parent1SolutionRepresentation.length; i++) {
-				System.out.print(parent1SolutionRepresentation[i]);
-			}
-			System.out.println();
-			System.out.println("OX p2");
-			for(int i=0; i<parent2SolutionRepresentation.length; i++) {
-				System.out.print(parent2SolutionRepresentation[i]);
-			}
-			System.out.println();
-			
 			// pick two random cut points while both the points are the first and the last element as nothing will change or whilst they are the same element
 			do {
 				int point1 = oRandom.nextInt(size);
@@ -82,16 +72,16 @@ public class OX implements XOHeuristicInterface {
 				// setting it so cutPoint1 is the smaller and cutPoint2 is the bigger
 				cutPoint1 = point1<point2 ? point1 : point2;
 				cutPoint2 = point2>point1 ? point2 : point1;
-			} while((cutPoint1 == 0 && cutPoint2 == size-1));// || cutPoint1 == cutPoint2);
+			} while((cutPoint1 == 0 && cutPoint2 == size-1) || cutPoint1 == cutPoint2);
 			
-			
-			
+
 			// perform OX maintaining the order
 			
 			child1SolutionRepresentation = new int[size];
 			child2SolutionRepresentation = new int[size];
 			
-			System.out.println(cutPoint1+" "+cutPoint2);
+			
+			
 			
 			//GENERATING CHILD 1
 			
@@ -100,13 +90,6 @@ public class OX implements XOHeuristicInterface {
 			for(int i=cutPoint1; i<=cutPoint2; i++) {
 				child1Parent1Symbols.add(parent1SolutionRepresentation[i]);
 			}
-			
-
-			System.out.println("OX c1 p1 symbols");
-			for(int i=0; i<child1Parent1Symbols.size(); i++) {
-				System.out.print(child1Parent1Symbols.get(i));
-			}
-			System.out.println();
 			
 			
 			//get symbols from parent 2 starting from second cut point
@@ -121,23 +104,12 @@ public class OX implements XOHeuristicInterface {
 					child1Parent2Symbols.add(parent2SolutionRepresentation[i]);
 					
 			}
-			
-			System.out.println("OX c1 p2 symbols");
-			for(int i=0; i<child1Parent2Symbols.size(); i++) {
-				System.out.print(child1Parent2Symbols.get(i));
-			}
-			System.out.println();
-			
+
 			//copying the middle into it
 			for(int i=cutPoint1; i<=cutPoint2; i++) {
 				child1SolutionRepresentation[i] = child1Parent1Symbols.get(i-cutPoint1);
 			}
 			
-			System.out.println("OX c1 1");
-			for(int i=0; i<child1SolutionRepresentation.length; i++) {
-				System.out.print(child1SolutionRepresentation[i]);
-			}
-			System.out.println();
 			
 			//copying the sides into it
 			{
@@ -147,41 +119,17 @@ public class OX implements XOHeuristicInterface {
 				for(int i=cutPoint2+1; i<child1SolutionRepresentation.length; i++, k++) {
 					child1SolutionRepresentation[i] = child1Parent2Symbols.get(k);
 				}
-				
-				System.out.println("OX c1 2");
-				for(int i=0; i<child1SolutionRepresentation.length; i++) {
-					System.out.print(child1SolutionRepresentation[i]);
-				}
-				System.out.println();
-				
+
 				for(int i=0; i<cutPoint1; i++, k++) {
 					child1SolutionRepresentation[i] = child1Parent2Symbols.get(k);
 				}
 				
 			}
-			
-			System.out.println("OX c1 3");
-			for(int i=0; i<child1SolutionRepresentation.length; i++) {
-				System.out.print(child1SolutionRepresentation[i]);
-			}
-			System.out.println();
+
 			
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+		
 			
 			
 			//GERNEATING CHILD 2
@@ -191,15 +139,7 @@ public class OX implements XOHeuristicInterface {
 			for(int i=cutPoint1; i<=cutPoint2; i++) {
 				child2Parent2Symbols.add(parent2SolutionRepresentation[i]);
 			}
-			
 
-			System.out.println("OX c2 p2 symbols");
-			for(int i=0; i<child2Parent2Symbols.size(); i++) {
-				System.out.print(child2Parent2Symbols.get(i));
-			}
-			System.out.println();
-			
-			
 			//get symbols from parent 1 starting from second cut point
 			ArrayList<Integer> child2Parent1Symbols = new ArrayList<Integer>();
 			for(int i=cutPoint2; i<parent1SolutionRepresentation.length ;i++) {
@@ -212,24 +152,12 @@ public class OX implements XOHeuristicInterface {
 					child2Parent1Symbols.add(parent1SolutionRepresentation[i]);
 					
 			}
-			
-			System.out.println("OX c2 p1 symbols");
-			for(int i=0; i<child2Parent1Symbols.size(); i++) {
-				System.out.print(child2Parent1Symbols.get(i));
-			}
-			System.out.println();
-			
+
 			//copying the middle into it
 			for(int i=cutPoint1; i<=cutPoint2; i++) {
 				child2SolutionRepresentation[i] = child2Parent2Symbols.get(i-cutPoint1);
 			}
-			
-			System.out.println("OX c2 1");
-			for(int i=0; i<child2SolutionRepresentation.length; i++) {
-				System.out.print(child2SolutionRepresentation[i]);
-			}
-			System.out.println();
-			
+
 			//copying the sides into it
 			{
 				// index used for parent 2 symbol
@@ -239,29 +167,14 @@ public class OX implements XOHeuristicInterface {
 					child2SolutionRepresentation[i] = child2Parent1Symbols.get(k);
 				}
 				
-				System.out.println("OX c2 2");
-				for(int i=0; i<child2SolutionRepresentation.length; i++) {
-					System.out.print(child2SolutionRepresentation[i]);
-				}
-				System.out.println();
 				
 				for(int i=0; i<cutPoint1; i++, k++) {
 					child2SolutionRepresentation[i] = child2Parent1Symbols.get(k);
 				}
 				
 			}
-			
-			System.out.println("OX c2 3");
-			for(int i=0; i<child2SolutionRepresentation.length; i++) {
-				System.out.print(child2SolutionRepresentation[i]);
-			}
-			System.out.println();
-			
-			
+
 		}
-			
-			
-			
 			
 		
 		//setting the child to be randomly 1 of the 2 generated children (50/50 chance of being either)
@@ -270,13 +183,16 @@ public class OX implements XOHeuristicInterface {
 		else
 			c.getSolutionRepresentation().setSolutionRepresentation(child2SolutionRepresentation);  // move to the new solution	
 	
-		System.out.println("OX");
-		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]);
-		}
-		System.out.println();
+		c.setObjectiveFunctionValue(oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation()));
 		
-		return c.getObjectiveFunctionValue();
+		
+//		System.out.println("OX");
+//		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+//			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
+//		}
+//		System.out.println();
+//		
+		return oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
 	}
 
 	@Override
@@ -300,4 +216,5 @@ public class OX implements XOHeuristicInterface {
 		
 		this.oObjectiveFunction = f;
 	}
+	
 }

@@ -75,14 +75,17 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 			
 		}	
 		
-		System.out.println("Davis");
-		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]);
-		}
-		System.out.println();
+		
+//		System.out.println("Davis");
+//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
+//		}
+//		System.out.println();
+		
+		oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
 		
 		// returning the cost of the new solution
-		return oSolution.getObjectiveFunctionValue();
+		return this.getSolutionCost(oSolution.getSolutionRepresentation());
 		
 		
 	}
@@ -112,7 +115,9 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 		
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);  // move to the new solution (error checking will be done in the class that uses this by comparing the returned cost with the previous cost)
 		
+		solution.setObjectiveFunctionValue(this.getSolutionCost(solution.getSolutionRepresentation()));
+		
 		// returning the cost of the new solution
-		return solution.getObjectiveFunctionValue();
+		return this.getSolutionCost(solution.getSolutionRepresentation());
 	}
 }

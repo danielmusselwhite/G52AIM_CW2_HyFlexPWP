@@ -115,13 +115,16 @@ public class CX implements XOHeuristicInterface {
 		else
 			c.getSolutionRepresentation().setSolutionRepresentation(childSolution2);  // move to the new solution	
 	
-		System.out.println("CX");
-		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]);
-		}
-		System.out.println();
 		
-		return c.getObjectiveFunctionValue();
+		c.setObjectiveFunctionValue(oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation()));
+		
+//		System.out.println("CX");
+//		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
+//			System.out.print(c.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
+//		}
+//		System.out.println();
+		
+		return oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
 	}
 
 	@Override

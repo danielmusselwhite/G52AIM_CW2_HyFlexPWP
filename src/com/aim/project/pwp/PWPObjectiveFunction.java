@@ -23,17 +23,21 @@ public class PWPObjectiveFunction implements ObjectiveFunctionInterface {
 		double totalCost=0;
 		
 
-			// (SIMPLE EVALUATION) 
+		// (SIMPLE EVALUATION) 
 
 		for(int i=0; i<currentSolution.length; i++) {
-			// if this is the first location (after the depot)
+			// if this is the first location then the one before it is the depot
 			if(i==0)
 				totalCost+=getCostBetweenDepotAnd(currentSolution[i]);
-			// if this is the last location (before home)
-			else if(i==currentSolution.length)
-				totalCost+=getCostBetweenHomeAnd(currentSolution[i]);
-			else
+			
+			// else this isn't the fist location so the one before it is another city
+			else {
 				totalCost+=getCost(currentSolution[i], currentSolution[i-1]);
+				// if this is also the last city then add the distance between it and the home
+				if(i==currentSolution.length-1) 
+					totalCost+=getCostBetweenHomeAnd(currentSolution[i]);
+			}
+				
 		}
 			
 		
