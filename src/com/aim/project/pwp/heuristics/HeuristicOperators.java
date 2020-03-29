@@ -91,6 +91,36 @@ public class HeuristicOperators {
 		return oObjectiveFunction;
 	}
 	
+	public double getDifferenceDeltaEvaluation(int[] newSolution, int size, int i1, int i2) {
+		int c=0;
+		
+		//if i1 is the last element..
+		if(i1 == size-1) {
+			//cost of edges at i1
+			c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i1]);
+			
+			//cost of edges at i2
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2]);
+			c+=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
+		}
+		//else if i1 is an intermediate node
+		else {
+			//cost of edges at i1
+			if(i1 == 0)
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+			else
+				c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			
+			//cost of edges at i2
+			if(i2 == size-1)
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+			else
+				c+=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);	
+		}
+		
+		return c;
+	}
 	
 }
 

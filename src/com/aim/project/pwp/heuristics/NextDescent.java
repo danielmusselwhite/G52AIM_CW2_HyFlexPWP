@@ -57,12 +57,18 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		
 		int acceptedSolutionCounter = 0;
 		
+		//c = delta evaluation cost (initialised to current value)
+		double c = oSolution.getObjectiveFunctionValue();
+		
 		// for each value in the solution..
 		for(int i=randomStart; i<size; i++) {
 			
 			//stop searching when we have accepted enough solutions to satisfy our depth of search
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
+			
+			//delta evaluation subtracting old values
+			c-=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
 			if(applyPerturbationOperator(oSolution, i)>bestEval)
@@ -71,6 +77,10 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			// else the cost was strictly improving, accept it
 			else 
 				acceptedSolutionCounter++;
+			
+			// delta evaluation adding new values
+			c+=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			
 		}
 		
 
@@ -81,6 +91,9 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
+			//delta evaluation subtracting old values
+			c-=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
 			if(applyPerturbationOperator(oSolution, i)>bestEval)
 				applyPerturbationOperator(oSolution, i);
@@ -88,9 +101,13 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			// else the cost was strictly improving, accept it
 			else 
 				acceptedSolutionCounter++;
+			
+			// delta evaluation adding new values
+			c+=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			
 		}
 		
-		//oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
+		oSolution.setObjectiveFunctionValue(c);
 		
 //		System.out.println("Next Descent");
 //		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
@@ -99,7 +116,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 //		System.out.println();
 //		
 		// returning the cost of the new solution
-		return this.getSolutionCost(oSolution.getSolutionRepresentation());
+		return c;
 		
 			
 	}

@@ -58,12 +58,17 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 		// used to only accept DOS moves
 		int acceptedSolutionCounter = 0;
 		
+		//c = delta evaluation cost (initialised to current value)
+		double c = oSolution.getObjectiveFunctionValue();
+		
 		// for each value in the solution..
 		for(int i=0; i<size; i++) {
 			//stop searching when we have accepted enough solutions to satisfy our depth of search
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
+			//delta evaluation subtracting old values
+			c-=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 			// if the cost of doing this flip is greater than the currentBestCost, flip the bit back
 			if(applyPerturbationOperator(oSolution, indexPermutation[i])>bestEval)
@@ -72,6 +77,10 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 			// else the cost was improving or equal to, accept it
 			else 
 				acceptedSolutionCounter++;
+			
+			// delta evaluation adding new values
+			c+=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			
 			
 		}	
 		
@@ -82,10 +91,10 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 //		}
 //		System.out.println();
 		
-		oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
+		oSolution.setObjectiveFunctionValue(c);
 		
 		// returning the cost of the new solution
-		return this.getSolutionCost(oSolution.getSolutionRepresentation());
+		return c;
 		
 		
 	}
