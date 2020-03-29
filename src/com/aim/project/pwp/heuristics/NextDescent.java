@@ -68,7 +68,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				break;
 			
 			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
 			if(applyPerturbationOperator(oSolution, i)>bestEval)
@@ -79,7 +79,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				acceptedSolutionCounter++;
 			
 			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 		}
 		
@@ -92,7 +92,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				break;
 			
 			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
 			if(applyPerturbationOperator(oSolution, i)>bestEval)
@@ -103,7 +103,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 				acceptedSolutionCounter++;
 			
 			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluation(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
 		}
 		

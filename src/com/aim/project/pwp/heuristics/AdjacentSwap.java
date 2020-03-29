@@ -52,12 +52,12 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 			int i2 = (i1+1)%size;			// adjacent point AFTER this point (circular)
 			
 			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluation(newSolution, size, i1, i2);
+			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, i1, i2);
 			
 			newSolution = swapPoints(newSolution, i1, i2);	// swapping the two adjacent points
 			
 			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluation(newSolution, size, i1, i2);
+			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, i1, i2);
 			
 		}
 		

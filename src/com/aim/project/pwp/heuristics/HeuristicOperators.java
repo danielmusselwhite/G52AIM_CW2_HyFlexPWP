@@ -91,8 +91,9 @@ public class HeuristicOperators {
 		return oObjectiveFunction;
 	}
 	
-	public double getDifferenceDeltaEvaluation(int[] newSolution, int size, int i1, int i2) {
-		int c=0;
+	// i1 = i,	i2 = (i+1)%size
+	public double getDifferenceDeltaEvaluationAdjacentSwap(int[] newSolution, int size, int i1, int i2) {
+		double c=0;
 		
 		//if i1 is the last element..
 		if(i1 == size-1) {
@@ -122,5 +123,97 @@ public class HeuristicOperators {
 		return c;
 	}
 	
+	public double getDifferenceDeltaEvaluation2Nodes(int[] newSolution, int size, int i1, int i2) {
+		double c=0;
+		
+		//if i1 is the last element..
+		if(i1 == size-1) {
+			c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i1]);
+		}
+		//else if i1 is the first element
+		else if(i1 == 0){
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+			c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i1+1]);
+		}
+		//else if i1 is an intermediate node
+		else {
+			c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i1+1]);
+		}
+		
+		//if i2 is the last edge..
+		if(i2 == size) {
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+		}
+		//else if i2 is the first element
+		else if(i2 == 0){
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2]);
+		}
+		//else if i2 is an intermediate node
+		else {
+			//if i2 - 1 is i1 we don't want to add it twice
+			if(i2-1!=i1)
+				c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
+		}
+		
+		return c;
+	}
+	
+	//i1 = value removing from, i2 = value inserting in front of
+	public double getDifferenceDeltaEvaluationReinsertion(int[] newSolution, int size, int i1, int i2) {
+		double c=0;
+
+		//if we are inserting the element to an index before where it was removed from
+		if(i1>i2) {
+		
+			// add cost between i1 and element after it
+			if(i1 == size-1) {
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i1]);
+			}
+			else {
+				c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i1+1]);
+			}
+			
+			// adding the cost of the new value inserted at i2
+			
+			//add cost of i2 and element before it
+			if(i2 == 0){
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2]);
+			}
+			else {
+				c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
+			}
+
+			c+=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
+			
+		}
+		
+		//else we are inserting the element to an index after where it was removed from
+		else {
+		
+			// add cost between i1 and element before it
+			if(i1 == 0) {
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+			}
+			else {
+				c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			}
+			
+			// adding the cost of the new value inserted at i2
+			if(i2 == size-1)
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(i2);
+			c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
+
+			if(i2-1 == 0){
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2-1]);
+			}
+			else {
+				c+=this.getObjectiveFunction().getCost(newSolution[i2-2], newSolution[i2-1]);
+			}
+		}
+		
+		return c;
+	}
 }
 
