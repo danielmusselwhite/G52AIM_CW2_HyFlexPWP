@@ -24,7 +24,8 @@ public class Utilities {
 		return arr;
 	}
 	public static int[] shuffleArray(int[] arr, Random rand) {
-			
+			// goes through each in the array and picks a random index for it to be swapped with
+		
 			// for each element in the array
 			for(int i=0; i<arr.length; i++) {
 				// pick a random index
