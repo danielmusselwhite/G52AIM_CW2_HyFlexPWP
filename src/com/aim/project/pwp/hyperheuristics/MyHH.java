@@ -52,6 +52,8 @@ public class MyHH extends HyperHeuristic {
 			
 			h = rws.performRouletteWheelSelection();	// pick the heuristic
 			
+			h=0;//always reinsertion
+			
 			// applying the heuristic
 			
 			double candidateSPrime;

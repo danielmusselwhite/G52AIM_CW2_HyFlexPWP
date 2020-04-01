@@ -65,21 +65,44 @@ public class HeuristicOperators {
 		//remove the element
 		int removedElement = oldSolution.remove(removeFromIndex);
 		
-		//add all the elements in order they appear up to the index we are inserting at
-		for(int i=0; i<insertToIndex; i++){
-		    newSolution.add(oldSolution.get(i));
+		//if we are removing after where we're inserting to
+		if(removeFromIndex>insertToIndex) {
+			oldSolution.add(insertToIndex, removedElement);
+			return Utilities.convertToArray(oldSolution);
+		}
+		//else we are inserting after we're removing from
+		else {
+			oldSolution.add(insertToIndex-1, removedElement);
+			return Utilities.convertToArray(oldSolution);
 		}
 		
-		//insert the removed element at this index
-		newSolution.add(removedElement);
 		
-		//add all the indexes left after the inserted index
-		for(int i=insertToIndex; i<oldSolution.size(); i++){
-		    newSolution.add(oldSolution.get(i));
-		}
 		
-		//convert back to int array and return
-		return Utilities.convertToArray(newSolution);
+//		
+//		if(insertToIndex==solution.length) {
+//			oldSolution.add(removedElement);
+//			return Utilities.convertToArray(oldSolution);
+//		}
+//		if(insertToIndex==0) {
+//			oldSolution.add(0,removedElement);
+//			return Utilities.convertToArray(oldSolution);
+//		}	
+//			
+//		//add all the elements in order they appear up to the index we are inserting at
+//		for(int i=0; i<insertToIndex-1; i++){
+//		    newSolution.add(oldSolution.get(i));
+//		}
+//		
+//		//insert the removed element at this index
+//		newSolution.add(removedElement);
+//		
+//		//add all the indexes left after the inserted index
+//		for(int i=insertToIndex-1; i<oldSolution.size(); i++){
+//		    newSolution.add(oldSolution.get(i));
+//		}
+//		
+//		//convert back to int array and return
+//		return Utilities.convertToArray(newSolution);
 	}
 	
 	
@@ -123,7 +146,7 @@ public class HeuristicOperators {
 		return c;
 	}
 	
-	public double getDifferenceDeltaEvaluation2Nodes(int[] newSolution, int size, int i1, int i2) {
+	public double getDifferenceDeltaEvaluationReinsertionBefore(int[] newSolution, int size, int i1, int i2) {
 		double c=0;
 		
 		//if i1 is the last element..
@@ -143,8 +166,8 @@ public class HeuristicOperators {
 		}
 		
 		//if i2 is the last edge..
-		if(i2 == size) {
-			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+		if(i2 == size-1) {
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]); //if i2 is size it is the last edge from the last location to the home (so i2 is technically home which isn't in array so do cost between home and i2-1)
 		}
 		//else if i2 is the first element
 		else if(i2 == 0){
@@ -152,16 +175,18 @@ public class HeuristicOperators {
 		}
 		//else if i2 is an intermediate node
 		else {
+
 			//if i2 - 1 is i1 we don't want to add it twice
 			if(i2-1!=i1)
 				c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
+			
 		}
 		
 		return c;
 	}
 	
 	//i1 = value removing from, i2 = value inserting in front of
-	public double getDifferenceDeltaEvaluationReinsertion(int[] newSolution, int size, int i1, int i2) {
+	public double getDifferenceDeltaEvaluationReinsertionAfter(int[] newSolution, int size, int i1, int i2) {
 		double c=0;
 
 		//if we are inserting the element to an index before where it was removed from
@@ -185,6 +210,7 @@ public class HeuristicOperators {
 				c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
 			}
 
+			//adding the element after it
 			c+=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
 			
 		}
@@ -201,16 +227,18 @@ public class HeuristicOperators {
 			}
 			
 			// adding the cost of the new value inserted at i2
-			if(i2 == size-1)
-				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(i2);
 			c+=this.getObjectiveFunction().getCost(newSolution[i2-1], newSolution[i2]);
+			
+			if(i2 == size-1) 
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(i2);
 
-			if(i2-1 == 0){
+			else if(i2-1 == 0){
 				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2-1]);
 			}
 			else {
 				c+=this.getObjectiveFunction().getCost(newSolution[i2-2], newSolution[i2-1]);
 			}
+			
 		}
 		
 		return c;

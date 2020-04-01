@@ -10,17 +10,19 @@ import AbstractClasses.HyperHeuristic;
  * @author Warren G. Jackson
  * Runs a simple random IE hyper-heuristic then displays the best solution found
  */
-public class SR_IE_VisualRunner extends HH_Runner_Visual {
+public class MYHH_VisualRunner extends HH_Runner_Visual {
 
 	@Override
 	protected HyperHeuristic getHyperHeuristic(long seed) {
 
-		return new SR_IE_HH(seed);
+		//SELECTION: Roulette Wheel
+		//ACCEPTANCE:Simulated Annealing
+		return new MyHH(seed, 7, 1, 14);
 	}
 	
 	public static void main(String [] args) {
 		
-		HH_Runner_Visual runner = new SR_IE_VisualRunner();
+		HH_Runner_Visual runner = new MYHH_VisualRunner();
 		runner.run();
 	}
 
