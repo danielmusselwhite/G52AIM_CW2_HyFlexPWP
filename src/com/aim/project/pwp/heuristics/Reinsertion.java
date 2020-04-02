@@ -43,7 +43,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 		int size = newSolution.length;
 		
 		//c = delta evaluation cost (initialised to current value)
-		double c = solution.getObjectiveFunctionValue();
+//		double c = solution.getObjectiveFunctionValue();
 		
 		for(int i=0; i<numberOfIterations; i++) {
 
@@ -54,19 +54,19 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 				index2 = oRandom.nextInt(size);
 			} while(index1==index2);
 			
-			c-=this.getDifferenceDeltaEvaluationReinsertionBefore(newSolution, size, index1, index2);
+//			c-=this.getDifferenceDeltaEvaluationReinsertionBefore(newSolution, size, index1, index2);
 			//removing point at index 1 and putting it into index2, maintaining order of the list
 			newSolution = removeAndInsertPoint(newSolution, index1, index2); 
 			
-			c+=this.getDifferenceDeltaEvaluationReinsertionAfter(newSolution, size, index1, index2);
+//			c+=this.getDifferenceDeltaEvaluationReinsertionAfter(newSolution, size, index1, index2);
 		}
 		
 		
 		// updating to the new solution
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
 		
-//		solution.setObjectiveFunctionValue(this.getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()));
-		solution.setObjectiveFunctionValue(c);
+		solution.setObjectiveFunctionValue(this.getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()));
+//		solution.setObjectiveFunctionValue(c);
 		
 //		System.out.println("Reinsertion");
 //		for(int i=0; i<solution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
@@ -75,8 +75,8 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 //		System.out.println();
 		
 		// returning the cost of the new solution
-//		return solution.getObjectiveFunctionValue();
-		return c;
+		return solution.getObjectiveFunctionValue();
+//		return c;
 	}
 
 	@Override

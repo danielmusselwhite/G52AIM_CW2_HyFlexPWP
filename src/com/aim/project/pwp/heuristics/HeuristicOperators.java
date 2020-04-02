@@ -39,27 +39,46 @@ public class HeuristicOperators {
 	//getting the subarray between two points
 	public int[] getSubArrayBetweenTwoPoints(int[] solution, int startIndex, int endIndex) {
 		// create a subarray of all points between those indexes
-		int[] subarrayOfLocations = new int[Math.abs(startIndex-endIndex)];
-
-		// copying values from these indexes into a subarray
-		subarrayOfLocations = Arrays.copyOfRange(solution, startIndex, endIndex);
+		ArrayList<Integer> subarrayOfLocations = new ArrayList<Integer>();
 		
-		return subarrayOfLocations;
+		// copying values from these indexes into a subarray
+		if(endIndex>startIndex)
+			return Arrays.copyOfRange(solution, startIndex, endIndex);
+		else {
+			for(int i=startIndex; i<solution.length;i++) {
+				subarrayOfLocations.add(solution[i]);
+			}
+			for(int i=0; i<endIndex;i++) {
+				subarrayOfLocations.add(solution[i]);
+			}
+		}
+		return Utilities.convertToArray(subarrayOfLocations);
 	}
 	
 	//setting the values in the solution to the subarray between the limiting index values
 	public int[] setValuesWithinRange(int[] solution, int[] subarray, int startIndex, int endIndex) {
-		for(int offset=0; offset+startIndex<endIndex; offset++) {
-			solution[startIndex + offset]=subarray[offset];
+		if(endIndex>startIndex) {
+			for(int offset=0; offset+startIndex<endIndex; offset++) {
+				solution[startIndex + offset]=subarray[offset];
+			}
 		}
+		else{
+			int offset=0;
+			for(; (startIndex + offset)<solution.length;offset++) {
+				solution[startIndex + offset]=subarray[offset];
+			}
+			for(int i=0; i<endIndex;i++) {
+				solution[i]=subarray[offset];
+				offset++;
+			}
+		}
+		
 		return solution;
 	}
 	
 	//removing point at index 1 and putting it into index2, maintaining order of the list
 	public int[] removeAndInsertPoint(int[] solution, int removeFromIndex, int insertToIndex) {
         
-        //convert to array lists as its easier to add and remove from
-        ArrayList<Integer> newSolution = new ArrayList<Integer>();
 		ArrayList<Integer> oldSolution = Utilities.convertToArrayList(solution);
 		
 		//remove the element
@@ -75,34 +94,6 @@ public class HeuristicOperators {
 			oldSolution.add(insertToIndex-1, removedElement);
 			return Utilities.convertToArray(oldSolution);
 		}
-		
-		
-		
-//		
-//		if(insertToIndex==solution.length) {
-//			oldSolution.add(removedElement);
-//			return Utilities.convertToArray(oldSolution);
-//		}
-//		if(insertToIndex==0) {
-//			oldSolution.add(0,removedElement);
-//			return Utilities.convertToArray(oldSolution);
-//		}	
-//			
-//		//add all the elements in order they appear up to the index we are inserting at
-//		for(int i=0; i<insertToIndex-1; i++){
-//		    newSolution.add(oldSolution.get(i));
-//		}
-//		
-//		//insert the removed element at this index
-//		newSolution.add(removedElement);
-//		
-//		//add all the indexes left after the inserted index
-//		for(int i=insertToIndex-1; i<oldSolution.size(); i++){
-//		    newSolution.add(oldSolution.get(i));
-//		}
-//		
-//		//convert back to int array and return
-//		return Utilities.convertToArray(newSolution);
 	}
 	
 	

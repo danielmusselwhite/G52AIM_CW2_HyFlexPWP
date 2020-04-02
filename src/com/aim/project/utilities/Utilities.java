@@ -147,24 +147,42 @@ public class Utilities {
 	}
 	
 	public static int[] shiftArray(int[] arr, int shift) {
-		
-		// if shifting it by more than its length modulo it
-		if(shift>arr.length)
-			shift = shift%arr.length;
-		
 		int[] newArr = new int[arr.length];
 		
-		//shifting first elements prior to shift
-		for(int i=0; i<shift; i++) 
-			newArr[i] = arr[arr.length-shift+i];
-		
-		//shifting elements after the shift
-		int j=0;
-		for(int i=shift; i<arr.length; i++) {
-			newArr[i] = arr[j];
-			j++;
+		if(shift>0) {
+			// if shifting it by more than its length modulo it
+			shift = shift%arr.length;
 			
+			//shifting first elements prior to shift
+			for(int i=0; i<shift; i++) 
+				newArr[i] = arr[arr.length-shift+i];
+			
+			//shifting elements after the shift
+			int j=0;
+			for(int i=shift; i<arr.length; i++) {
+				newArr[i] = arr[j];
+				j++;
+				
+			}
 		}
+		else {
+			// if shifting it by more than its length modulo it
+			shift = -1*(shift%arr.length);
+			
+			//shifting first elements prior to shift
+			for(int i=0; i<shift; i++) 
+				newArr[i] = arr[arr.length-shift+i];
+			
+			//shifting elements after the shift
+			int j=0;
+			for(int i=shift; i<arr.length; i++) {
+				newArr[i] = arr[j];
+				j++;
+				
+			}
+		}
+		
+		
 		
 		return newArr;			
 	}

@@ -46,16 +46,11 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 		for(int i=0; i<numberOfIterations; i++) {
 
 			// pick 2 different random points
-			int index1 = oRandom.nextInt(size);	
-			int index2;
+			int startIndex = oRandom.nextInt(size);	
+			int endIndex;
 			do {
-				index2 = oRandom.nextInt(size);
-			} while(index1==index2);
-			
-			
-			// working out which is the start and end index
-			int startIndex = index1 < index2 ? index1 : index2;
-			int endIndex = index2 > index1 ? index2 : index1;
+				endIndex = oRandom.nextInt(size);
+			} while(startIndex==endIndex);
 			
 			// create a subarray of all points between those indexes
 			int[] subarrayOfLocations = getSubArrayBetweenTwoPoints(newSolution, startIndex, endIndex);
