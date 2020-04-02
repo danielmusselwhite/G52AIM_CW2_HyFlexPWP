@@ -234,5 +234,59 @@ public class HeuristicOperators {
 		
 		return c;
 	}
+	
+	
+	public double getDifferenceDeltaEvaluationInversion(int[] newSolution, int size, int startIndex, int endIndex) {
+		double c = 0;
+		
+		//if we start inversion at index less than the index we end it at
+		if(startIndex<endIndex) {
+			//get cost between start index and element before it
+			if(startIndex==0)
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[startIndex]);
+			else
+				c+=this.getObjectiveFunction().getCost(newSolution[startIndex-1], newSolution[startIndex]);
+			
+			//get cost of paths between start and end index
+			for(int i=startIndex; i<endIndex;i++)
+				c+=this.getObjectiveFunction().getCost(newSolution[i], newSolution[i+1]);
+			
+			//get cost between end index and element after it
+			if(endIndex==size-1)
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[endIndex]);
+			else
+				c+=this.getObjectiveFunction().getCost(newSolution[endIndex], newSolution[endIndex+1]);
+		}
+		
+		//else we start inversion at index greater than the index we end it at
+		else {
+			
+			//get cost of start element and the index before it
+			c+=this.getObjectiveFunction().getCost(newSolution[startIndex-1], newSolution[startIndex]);
+			
+			//get cost of paths between start index and the final element
+			for(int i=startIndex; i<size-1;i++)
+				c+=this.getObjectiveFunction().getCost(newSolution[i], newSolution[i+1]);
+			
+			//get cost of path between final element and home
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[size-1]);
+			
+			//get cost between depot and first element
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[0]);
+			
+			//get cost of paths between first element and end index
+			//get cost of paths between start index and the final element
+			for(int i=0; i<endIndex;i++)
+				c+=this.getObjectiveFunction().getCost(newSolution[i], newSolution[i+1]);
+			
+			//if the element after the end index isn't the element before the start index, add it
+			if(startIndex-1!=endIndex+1)
+				c+=this.getObjectiveFunction().getCost(newSolution[endIndex], newSolution[endIndex+1]);
+		}
+		
+		
+		
+		return c;
+	}
 }
 

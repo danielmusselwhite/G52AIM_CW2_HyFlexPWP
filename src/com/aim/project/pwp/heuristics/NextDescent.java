@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.aim.project.pwp.interfaces.HeuristicInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
-import com.aim.project.pwp.solution.PWPSolution;
 
 
 /**
@@ -67,20 +66,16 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
-			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			//apply perturbation operator and store its cost
+			c=applyPerturbationOperator(oSolution, i,c);
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
-			if(applyPerturbationOperator(oSolution, i)>bestEval)
-				applyPerturbationOperator(oSolution, i);
+			if(c>bestEval)
+				c=applyPerturbationOperator(oSolution, i,c);
 			
 			// else the cost was strictly improving, accept it
 			else 
-				acceptedSolutionCounter++;
-			
-			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
-			
+				acceptedSolutionCounter++;	
 		}
 		
 
@@ -91,31 +86,20 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
-			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
+			//apply perturbation operator and store its cost
+			c=applyPerturbationOperator(oSolution, i,c);
 			
 			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
-			if(applyPerturbationOperator(oSolution, i)>bestEval)
-				applyPerturbationOperator(oSolution, i);
+			if(c>bestEval)
+				c=applyPerturbationOperator(oSolution, i,c);
 			
 			// else the cost was strictly improving, accept it
 			else 
-				acceptedSolutionCounter++;
-			
-			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
-			
+				acceptedSolutionCounter++;	
 		}
 		
 		oSolution.setObjectiveFunctionValue(c);
 		
-//		System.out.println("Next Descent");
-//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
-//		}
-//		System.out.println();
-//		
-		// returning the cost of the new solution
 		return c;
 		
 			
@@ -136,17 +120,22 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 		return true;
 	}
 	
-	//adjacent swap
-	private double applyPerturbationOperator(PWPSolutionInterface solution, int index) {
+	//Perturbation operator used in hill climbing algorithms: adjacent swap
+	protected double applyPerturbationOperator(PWPSolutionInterface solution, int index, double c) {
 
 		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
 		int size = newSolution.length;
+		
+		//delta evaluation subtracting old values
+		c-=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, index, (index+1)%size);
 		
 		newSolution = swapPoints(newSolution, index, (index+1)%size);	// swapping the two adjacent points
 		
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);  // move to the new solution (error checking will be done in the class that uses this by comparing the returned cost with the previous cost)
 		
+		c+=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, index, (index+1)%size);
+		
 		// returning the cost of the new solution
-		return this.getSolutionCost(solution.getSolutionRepresentation());
+		return c;
 	}
 }

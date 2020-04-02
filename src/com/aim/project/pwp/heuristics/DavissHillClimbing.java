@@ -67,35 +67,23 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 			if(acceptedSolutionCounter>=acceptedSolutionLimit)
 				break;
 			
-			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
 			
-			// if the cost of doing this flip is greater than the currentBestCost, flip the bit back
-			if(applyPerturbationOperator(oSolution, indexPermutation[i])>bestEval)
-				applyPerturbationOperator(oSolution, indexPermutation[i]);
+			//apply perturbation operator and store its cost
+			c=applyPerturbationOperator(oSolution, indexPermutation[i],c);
+			
+			// if the cost of doing this flip is greater than or equal to the currentBestCost, flip the bit back
+			if(c>bestEval)
+				c=applyPerturbationOperator(oSolution, indexPermutation[i],c);
 			
 			// else the cost was improving or equal to, accept it
 			else 
 				acceptedSolutionCounter++;
 			
-			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(oSolution.getSolutionRepresentation().getSolutionRepresentation(), size, i, (i+1)%size);
-			
-			
 		}	
-		
-		
-//		System.out.println("Davis");
-//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
-//		}
-//		System.out.println();
 		
 		oSolution.setObjectiveFunctionValue(c);
 		
-		// returning the cost of the new solution
 		return c;
-		
 		
 	}
 
@@ -114,19 +102,22 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 		return true;
 	}
 	
-	//adjacent swap
-	private double applyPerturbationOperator(PWPSolutionInterface solution, int index) {
+	//Perturbation operator used in hill climbing algorithms: adjacent swap
+	protected double applyPerturbationOperator(PWPSolutionInterface solution, int index, double c) {
 
 		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
 		int size = newSolution.length;
+		
+		//delta evaluation subtracting old values
+		c-=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, index, (index+1)%size);
 		
 		newSolution = swapPoints(newSolution, index, (index+1)%size);	// swapping the two adjacent points
 		
 		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);  // move to the new solution (error checking will be done in the class that uses this by comparing the returned cost with the previous cost)
 		
-		solution.setObjectiveFunctionValue(this.getSolutionCost(solution.getSolutionRepresentation()));
+		c+=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, index, (index+1)%size);
 		
 		// returning the cost of the new solution
-		return this.getSolutionCost(solution.getSolutionRepresentation());
+		return c;
 	}
 }
