@@ -48,10 +48,10 @@ public class CX implements XOHeuristicInterface {
 			iterations = 6;
 		
 
-		int[] parent1Solution = p1.getSolutionRepresentation().getSolutionRepresentation().clone();
-		int[] parent2Solution = p2.getSolutionRepresentation().getSolutionRepresentation().clone();
-		int[] childSolution1 = parent1Solution.clone();
-		int[] childSolution2 = parent2Solution.clone();
+		int[] parent1Solution = p1.getSolutionRepresentation().getSolutionRepresentation();
+		int[] parent2Solution = p2.getSolutionRepresentation().getSolutionRepresentation();
+		int[] childSolution1 = parent2Solution.clone();
+		int[] childSolution2 = parent1Solution.clone();
 
 		for(int i=0; i<iterations; i++){
 			
@@ -126,6 +126,7 @@ public class CX implements XOHeuristicInterface {
 		
 		return oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
 	}
+
 
 	@Override
 	public boolean isCrossover() {

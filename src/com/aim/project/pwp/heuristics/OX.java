@@ -57,8 +57,8 @@ public class OX implements XOHeuristicInterface {
 		
 		int[] child1SolutionRepresentation = new int[size];
 		int[] child2SolutionRepresentation = new int[size];
-		int[] parent1SolutionRepresentation = p1.getSolutionRepresentation().getSolutionRepresentation().clone();
-		int[] parent2SolutionRepresentation = p2.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] parent1SolutionRepresentation = p1.getSolutionRepresentation().getSolutionRepresentation();
+		int[] parent2SolutionRepresentation = p2.getSolutionRepresentation().getSolutionRepresentation();
 		
 		
 		

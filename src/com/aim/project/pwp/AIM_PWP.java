@@ -4,7 +4,6 @@ package com.aim.project.pwp;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -22,7 +21,6 @@ import com.aim.project.pwp.interfaces.HeuristicInterface;
 import com.aim.project.pwp.interfaces.ObjectiveFunctionInterface;
 import com.aim.project.pwp.interfaces.PWPInstanceInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
-import com.aim.project.pwp.interfaces.SolutionRepresentationInterface;
 import com.aim.project.pwp.interfaces.Visualisable;
 import com.aim.project.pwp.interfaces.XOHeuristicInterface;
 import com.aim.project.pwp.solution.PWPSolution;
@@ -67,8 +65,8 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		// setting up array of heuristics
 		aoHeuristics = new HeuristicInterface[7];
-		aoHeuristics[0] = new AdjacentSwap(m_random);
-		aoHeuristics[1] = new InversionMutation(m_random);
+		aoHeuristics[0] = new InversionMutation(m_random);
+		aoHeuristics[1] = new AdjacentSwap(m_random);
 		aoHeuristics[2] = new Reinsertion(m_random);
 		aoHeuristics[3] = new NextDescent(m_random);
 		aoHeuristics[4] = new DavissHillClimbing(m_random);
@@ -99,21 +97,12 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 
 		this.aoHeuristics[hIndex].apply(this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
 		
-		// if this candidate is an improvement, accept it 
-		if(this.getFunctionValue(candidateIndex)<this.getFunctionValue(currentIndex)) {
-			this.copySolution(candidateIndex, currentIndex);
-			
-			// if it is also better than the current best value, update that
-			if(this.getFunctionValue(currentIndex)<this.getBestSolutionValue())
-				this.updateBestSolution(currentIndex);
-		}
-				
-		// else reject it
-		else
-			this.copySolution(currentIndex, candidateIndex);
-	
+		// if it is also better than the current best value, update that
+		if(this.getFunctionValue(currentIndex)<this.getBestSolutionValue())
+			this.updateBestSolution(currentIndex);
+		
 		// return the value the new score is (may be same if it was rejected or better if it was accepted
-		return this.getFunctionValue(currentIndex);
+		return this.getFunctionValue(candidateIndex);
 	}
 
 	@Override
@@ -131,6 +120,11 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		XOHeuristicInterface crossoverHeuristic = (XOHeuristicInterface) aoHeuristics[hIndex];
 		crossoverHeuristic.apply(this.aoMemoryOfSolutions[parent1Index],  this.aoMemoryOfSolutions[parent2Index], this.aoMemoryOfSolutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
 	
+		// if it is also better than the current best value, update that
+		if(this.getFunctionValue(candidateIndex)<this.getBestSolutionValue())
+			this.updateBestSolution(candidateIndex);
+		
+		
 		return this.getFunctionValue(candidateIndex);
 	}
 
@@ -178,71 +172,83 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	public int[] getHeuristicsOfType(HeuristicType type) {
 		
 		// TODO return an array of heuristic IDs based on the heuristic's type.
-
-		ArrayList<Integer> ids = new ArrayList<Integer>();
-		
 		switch(type) {
-		
 		case CROSSOVER:
-			
-			// adding OX and CX
-			ids.add(5);
-			ids.add(6);
-			break;
-			
-			
+			return new int[] {5,6};
 		case LOCAL_SEARCH:
-			
-			// adding next descent and davis bit
-			ids.add(3);
-			ids.add(4);
-			break;
-			
-			
+			return new int[] {3,4};
 		case MUTATION:
-
-			//adding adjacentSwap, InversionMutation and Reinsertion
-			ids.add(0);
-			ids.add(1);
-			ids.add(2);
-			break;
-			
-			
-		default:
-			break;
+			return new int[] {0,1,2};
 		}
 		
-		return Utilities.convertToArray(ids);
+		return new int[] {};
+		
+//		ArrayList<Integer> ids = new ArrayList<Integer>();
+//		
+//		switch(type) {
+//		
+//		case CROSSOVER:
+//			
+//			// adding OX and CX
+//			ids.add(5);
+//			ids.add(6);
+//			break;
+//			
+//			
+//		case LOCAL_SEARCH:
+//			
+//			// adding next descent and davis bit
+//			ids.add(3);
+//			ids.add(4);
+//			break;
+//			
+//			
+//		case MUTATION:
+//
+//			//adding adjacentSwap, InversionMutation and Reinsertion
+//			ids.add(0);
+//			ids.add(1);
+//			ids.add(2);
+//			break;
+//			
+//			
+//		default:
+//			break;
+//		}
+//		
+//		return Utilities.convertToArray(ids);
 	}
 
 	@Override
 	public int[] getHeuristicsThatUseDepthOfSearch() {
 		
-		// DONE return the array of heuristic IDs that use depth of search.
+		// TODO return the array of heuristic IDs that use depth of search.
+		return new int[] {3,4};
 		
-		ArrayList<Integer> alDOS = new ArrayList<Integer>();
-		
-		// for each heuristic check if it uses depth of search and if it does add its index to the array list
-		for(int i=0; i<this.aoHeuristics.length; i++)
-			if(aoHeuristics[i].usesDepthOfSearch())
-				alDOS.add(i);
-		
-		return Utilities.convertToArray(alDOS);
+//		ArrayList<Integer> alDOS = new ArrayList<Integer>();
+//		
+//		// for each heuristic check if it uses depth of search and if it does add its index to the array list
+//		for(int i=0; i<this.aoHeuristics.length; i++)
+//			if(aoHeuristics[i].usesDepthOfSearch())
+//				alDOS.add(i);
+//		
+//		return Utilities.convertToArray(alDOS);
 	}
 
 	@Override
 	public int[] getHeuristicsThatUseIntensityOfMutation() {
 		
-		// DONE return the array of heuristic IDs that use intensity of mutation.
+		// TODO return the array of heuristic IDs that use intensity of mutation.
+		return new int[] {0,1,2,5,6};
 		
-		ArrayList<Integer> alIOM = new ArrayList<Integer>();
-		
-		// for each heuristic check if it uses intensity of mutation and if it does add its index to the array list
-		for(int i=0; i<this.aoHeuristics.length; i++)
-			if(aoHeuristics[i].usesIntensityOfMutation())
-				alIOM.add(i);
-		
-		return Utilities.convertToArray(alIOM);
+//		ArrayList<Integer> alIOM = new ArrayList<Integer>();
+//		
+//		// for each heuristic check if it uses intensity of mutation and if it does add its index to the array list
+//		for(int i=0; i<this.aoHeuristics.length; i++)
+//			if(aoHeuristics[i].usesIntensityOfMutation())
+//				alIOM.add(i);
+//		
+//		return Utilities.convertToArray(alIOM);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.aim.project.pwp.heuristics;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import com.aim.project.pwp.interfaces.HeuristicInterface;
@@ -24,7 +23,6 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 		// rule is numberOfIterations = 2(n+1) where n = number of 0.2's there are in intensityOfMutation
 		//by dividing IOM by 0.2 you have n
 		//int numberOfIterations = (int) (2*((dIntensityOfMutation)/0.2d)+1);
-		
 		int numberOfIterations=0;
 		
 		if(dIntensityOfMutation >= 0 && dIntensityOfMutation<0.2)
@@ -40,53 +38,42 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 		else if(dIntensityOfMutation == 1)
 			numberOfIterations = 6;
 		
-		int[] newSolution = oSolution.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] newSolution = oSolution.getSolutionRepresentation().getSolutionRepresentation();//.clone();
 		int size = newSolution.length;
 		
 		//c = delta evaluation cost (initialised to current value)
-//		double c = oSolution.getObjectiveFunctionValue();
-		
+		double c = oSolution.getObjectiveFunctionValue();
+				
 		for(int i=0; i<numberOfIterations; i++) {
 
 
 			
 			// pick 2 different random points
-			int startIndex = oRandom.nextInt(size);	
-			int endIndex;
+			int i1 = oRandom.nextInt(size);	
+			int i2;
 			do {
-				endIndex = oRandom.nextInt(size);
-			} while(startIndex==endIndex);
+				i2 = oRandom.nextInt(size);
+			} while(i1==i2);
 			
-//			c-=this.getDifferenceDeltaEvaluationInversion(newSolution, size, startIndex, endIndex);
+			int startIndex = i1 < i2 ? i1 : i2;
+			int endIndex = i1 < i2 ? i2 : i1;
 			
-			// create a subarray of all points between those indexes
-			int[] subarrayOfLocations = getSubArrayBetweenTwoPoints(newSolution, startIndex, endIndex);
-	
-			//reversing this subarray
-			subarrayOfLocations = Utilities.reverseArray(subarrayOfLocations);
+			// delta evaluation
+			c=this.deltaEvaluation(newSolution, size, startIndex, endIndex, c);
 			
-			//putting the reversed subarray into the new solution
-			newSolution = setValuesWithinRange(newSolution, subarrayOfLocations, startIndex, endIndex);
+			this.invertBetweenPoints(newSolution, startIndex, endIndex);
+			
+//			if(c == getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
+//			System.out.println("GOOD DELTA AND ACTUAL ARE BOTH " + c);
+//						
+//			if(c != getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
+//			System.out.println("ERROR DELTA C IS " + c + " BUT ACTUAL VALUE : " + getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()));
 
-//			c+=this.getDifferenceDeltaEvaluationInversion(newSolution, size, startIndex, endIndex);
 		}
 		
-		
-		// updating to the new solution
-		oSolution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
-		
-		oSolution.setObjectiveFunctionValue(this.getSolutionCost(oSolution.getSolutionRepresentation()));
-//		oSolution.setObjectiveFunctionValue(c);
-		
-//		System.out.println("Inversion");
-//		for(int i=0; i<oSolution.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
-//			System.out.print(oSolution.getSolutionRepresentation().getSolutionRepresentation()[i]+"-");
-//		}
-//		System.out.println();
-		
-		// returning the cost of the new solution
-		return this.getSolutionCost(oSolution.getSolutionRepresentation());
-//		return c;
+		oSolution.setObjectiveFunctionValue(c);
+
+		return c;
 	}
 	
 	@Override
@@ -102,6 +89,48 @@ public class InversionMutation extends HeuristicOperators implements HeuristicIn
 	@Override
 	public boolean usesDepthOfSearch() {
 		return false;
+	}
+	
+	private void invertBetweenPoints(int[] solution, int startIndex, int endIndex) {
+		int i=startIndex;
+		int j=endIndex;
+		
+		while(i<j) {
+			this.swapPoints(solution, i, j);
+			i++;
+			j--;
+		}
+	}
+	
+	private double deltaEvaluation(int[] newSolution, int size, int startIndex, int endIndex, double c) {
+		
+		//only need to calculate the start and end changes as all the rest will have the same distances just in stead of being x->y its now y->x but still same distance
+		
+		//get cost between start index and element before it
+		if(startIndex==0) {
+			c-=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[startIndex]);
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[endIndex]);
+		}
+		else {
+			c-=this.getObjectiveFunction().getCost(newSolution[startIndex-1], newSolution[startIndex]);
+			c+=this.getObjectiveFunction().getCost(newSolution[startIndex-1], newSolution[endIndex]);
+		}
+			
+		
+		//get cost between end index and element after it
+		if(endIndex==size-1) {
+			c-=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[endIndex]);
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[startIndex]);
+		}
+			
+		else {
+			c-=this.getObjectiveFunction().getCost(newSolution[endIndex], newSolution[endIndex+1]);
+			c+=this.getObjectiveFunction().getCost(newSolution[startIndex], newSolution[endIndex+1]);
+		}
+			
+	
+		return c;
+
 	}
 
 }

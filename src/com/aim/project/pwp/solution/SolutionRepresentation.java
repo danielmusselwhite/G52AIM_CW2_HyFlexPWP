@@ -38,7 +38,7 @@ public class SolutionRepresentation implements SolutionRepresentationInterface {
 	@Override
 	public SolutionRepresentationInterface clone() {
 
-		return new SolutionRepresentation(aiSolutionRepresentation);
+		return new SolutionRepresentation(aiSolutionRepresentation.clone());
 	}
 
 }

@@ -2,7 +2,6 @@ package com.aim.project.pwp.heuristics;
 
 import java.util.Random;
 
-import com.aim.project.pwp.PWPObjectiveFunction;
 import com.aim.project.pwp.interfaces.HeuristicInterface;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
 
@@ -20,11 +19,6 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 
 	@Override
 	public double apply(PWPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
-		
-		// rule is numberOfIterations = 2^n where n = number of 0.2's there are in intensityOfMutation
-		//by dividing IOM by 0.2 you have n
-		//int numberOfIterations = (int) Math.pow(2, (int)((intensityOfMutation)/0.2d));
-		
 		int numberOfIterations=0;
 		
 		if(intensityOfMutation >= 0 && intensityOfMutation<0.2)
@@ -40,7 +34,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 		else if(intensityOfMutation == 1)
 			numberOfIterations = 32;
 		
-		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
+		int[] newSolution = solution.getSolutionRepresentation().getSolutionRepresentation();
 		int size = newSolution.length;
 		
 		//c = delta evaluation cost (initialised to current value)
@@ -51,34 +45,23 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 			int i1 = oRandom.nextInt(size);	// pick random point
 			int i2 = (i1+1)%size;			// adjacent point AFTER this point (circular)
 			
-			//delta evaluation subtracting old values
-			c-=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, i1, i2);
+			//delta evaluation
+			c=this.deltaEvaluation(newSolution, size, i1, i2, c);
 			
-			newSolution = swapPoints(newSolution, i1, i2);	// swapping the two adjacent points
+			swapPoints(newSolution, i1, i2);	// swapping the two adjacent points
 			
-			// delta evaluation adding new values
-			c+=this.getDifferenceDeltaEvaluationAdjacentSwap(newSolution, size, i1, i2);
-			
+//			if(c == getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()))
+//			System.out.println("GOOD DELTA AND ACTUAL ARE BOTH" + c);
+//			
+//			if(c != getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()))
+//                System.out.println("ERROR DELTA C IS " + c + " BUT ACTUAL VALUE : " + getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()));
 		}
 		
-//		
-//		System.out.println("AdjacentSwap");
-//		for(int i=0; i<newSolution.length; i++) {
-//			System.out.print(newSolution[i]+"-");
-//		}
-//		System.out.println();
-//		
-		// updating to the new solution
-		solution.getSolutionRepresentation().setSolutionRepresentation(newSolution);
-		
 		solution.setObjectiveFunctionValue(c);
-//		solution.setObjectiveFunctionValue(this.getObjectiveFunction().getObjectiveFunctionValue(solution.getSolutionRepresentation()));
-		
-		// returning the cost of the new solution
-		return c;
-//		return solution.getObjectiveFunctionValue();
-	}
 
+		return c;
+	}
+	
 	@Override
 	public boolean isCrossover() {
 		return false;
@@ -93,6 +76,50 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 	public boolean usesDepthOfSearch() {
 		return false;
 	}
-	
+
+	private double deltaEvaluation(int[] newSolution, int size, int i1, int i2, double c) {
+		
+		//if i1 is the last element..
+		if(i1 == size-1) {
+			//cost of edges at i1
+			c-=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+			c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i2]);
+			c-=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i1]);
+			c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+			
+			//cost of edges at i2
+			c-=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2]);
+			c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+			c-=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);
+			c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i2+1]);
+		}
+		//else if i1 is an intermediate node
+		else {
+			//cost of edges at i1
+			if(i1 == 0) {
+				c-=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i1]);
+				c+=this.getObjectiveFunction().getCostBetweenDepotAnd(newSolution[i2]);
+			}
+			else {
+				c-=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i1]);
+				c+=this.getObjectiveFunction().getCost(newSolution[i1-1], newSolution[i2]);
+			}
+				
+			
+			//cost of edges at i2
+			if(i2 == size-1) {
+				c-=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i2]);
+				c+=this.getObjectiveFunction().getCostBetweenHomeAnd(newSolution[i1]);
+			}
+				
+			else {
+				c-=this.getObjectiveFunction().getCost(newSolution[i2], newSolution[i2+1]);	
+				c+=this.getObjectiveFunction().getCost(newSolution[i1], newSolution[i2+1]);	
+			}
+				
+		}
+		
+		return c;
+	}
 }
 

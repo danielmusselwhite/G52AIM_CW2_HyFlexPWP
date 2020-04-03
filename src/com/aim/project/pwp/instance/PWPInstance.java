@@ -59,7 +59,7 @@ public class PWPInstance implements PWPInstanceInterface {
 			for(int i=0; i<iNumberOfLocations-2; i++)
 				permutationRepresentation[i]=i;
 			// shuffling into a random permutation
-			permutationRepresentation = Utilities.shuffleArray(permutationRepresentation, oRandom);
+			Utilities.shuffleArray(permutationRepresentation, oRandom);
 			break;
 			
 		default:

@@ -18,6 +18,7 @@ public class MYHH_VisualRunner extends HH_Runner_Visual {
 		//SELECTION: Roulette Wheel
 		//ACCEPTANCE:Simulated Annealing
 		return new MyHH(seed, 7, 1, 14);
+//		return new MyHH(seed, 5, 1, 10);
 	}
 	
 	public static void main(String [] args) {

@@ -34,7 +34,7 @@ public class SR_IE_HH extends HyperHeuristic {
 		while(!hasTimeExpired() ) {
 			
 			h = rng.nextInt(oProblem.getNumberOfHeuristics());
-			
+	
 			double candidate;
 			if(h < 5) {
 				candidate = oProblem.applyHeuristic(h, 0, 1);

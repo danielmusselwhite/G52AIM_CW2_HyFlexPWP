@@ -1,7 +1,6 @@
 package com.aim.project.pwp.runners;
 
 
-import com.aim.project.pwp.hyperheuristics.MyHH;
 import com.aim.project.pwp.hyperheuristics.SR_IE_HH;
 
 import AbstractClasses.HyperHeuristic;
