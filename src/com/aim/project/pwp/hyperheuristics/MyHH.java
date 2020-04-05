@@ -6,6 +6,7 @@ import java.util.Random;
 import com.aim.project.pwp.AIM_PWP;
 import com.aim.project.pwp.SolutionPrinter;
 import com.aim.project.pwp.interfaces.PWPSolutionInterface;
+import com.aim.project.utilities.Utilities;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
@@ -107,6 +108,7 @@ public class MyHH extends HyperHeuristic {
 		PWPSolutionInterface oSolution = ((AIM_PWP) oProblem).getBestSolution();
 		SolutionPrinter oSP = new SolutionPrinter("out.csv");
 		oSP.printSolution( ((AIM_PWP) oProblem).oInstance.getSolutionAsListOfLocations(oSolution));
+		Utilities.myPrintSolution("myOut.csv", ((AIM_PWP) oProblem).oInstance.getSolutionAsListOfLocations(oSolution));
 		System.out.println(String.format("Total iterations = %d", iteration));
 	}
 

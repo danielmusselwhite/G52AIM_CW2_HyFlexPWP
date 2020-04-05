@@ -116,7 +116,8 @@ public class CX implements XOHeuristicInterface {
 			c.getSolutionRepresentation().setSolutionRepresentation(childSolution2);  // move to the new solution	
 	
 		
-		c.setObjectiveFunctionValue(oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation()));
+		double cost = oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
+		c.setObjectiveFunctionValue(cost);
 		
 //		System.out.println("CX");
 //		for(int i=0; i<c.getSolutionRepresentation().getSolutionRepresentation().length; i++) {
@@ -124,7 +125,7 @@ public class CX implements XOHeuristicInterface {
 //		}
 //		System.out.println();
 		
-		return oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
+		return cost;
 	}
 
 

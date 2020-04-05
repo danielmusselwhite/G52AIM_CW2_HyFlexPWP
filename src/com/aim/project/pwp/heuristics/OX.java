@@ -183,7 +183,9 @@ public class OX implements XOHeuristicInterface {
 		else
 			c.getSolutionRepresentation().setSolutionRepresentation(child2SolutionRepresentation);  // move to the new solution	
 	
-		c.setObjectiveFunctionValue(oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation()));
+		
+		double cost = oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
+		c.setObjectiveFunctionValue(cost);
 		
 		
 //		System.out.println("OX");
@@ -192,7 +194,7 @@ public class OX implements XOHeuristicInterface {
 //		}
 //		System.out.println();
 //		
-		return oObjectiveFunction.getObjectiveFunctionValue(c.getSolutionRepresentation());
+		return cost;
 	}
 
 	@Override

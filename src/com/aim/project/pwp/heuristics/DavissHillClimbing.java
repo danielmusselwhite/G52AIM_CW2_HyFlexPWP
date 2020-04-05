@@ -30,20 +30,20 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 		//by dividing DOS by 0.2 you have n
 		//int acceptedSolutionLimit = (int) (2*((dDepthOfSearch)/0.2d)+1);
 		
-		int acceptedSolutionLimit=0;
+		int numberOfIterations=0;
 		
 		if(dDepthOfSearch >= 0 && dDepthOfSearch<0.2)
-			acceptedSolutionLimit = 1;
+			numberOfIterations = 1;
 		else if(dDepthOfSearch >= 0.2 && dDepthOfSearch <0.4)
-			acceptedSolutionLimit = 2;
+			numberOfIterations = 2;
 		else if(dDepthOfSearch >= 0.4 && dDepthOfSearch<0.6)
-			acceptedSolutionLimit = 3;
+			numberOfIterations = 3;
 		else if(dDepthOfSearch >= 0.6 && dDepthOfSearch<0.8)
-			acceptedSolutionLimit = 4;
+			numberOfIterations = 4;
 		else if(dDepthOfSearch >=0.8 && dDepthOfSearch<1)
-			acceptedSolutionLimit = 5;
+			numberOfIterations = 5;
 		else if(dDepthOfSearch == 1)
-			acceptedSolutionLimit = 6;
+			numberOfIterations = 6;
 		
 		// bestEval will be the original eval at the start
 		double bestEval = oSolution.getObjectiveFunctionValue();
@@ -55,38 +55,35 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 		int[] indexPermutation = this.getArrayOfBitIndexes(size);
 		Utilities.shuffleArray(indexPermutation, oRandom);
 		
-		// used to only accept DOS moves
-		int acceptedSolutionCounter = 0;
-		
 		//c = delta evaluation cost (initialised to current value)
 		double c = oSolution.getObjectiveFunctionValue();
 		
-		// for each value in the solution..
-		for(int i1=0; i1<size; i1++) {
-			//stop searching when we have accepted enough solutions to satisfy our depth of search
-			if(acceptedSolutionCounter>=acceptedSolutionLimit)
-				break;
-			
-			int i2 = (i1+1)%size;
-			
-			//delta evaluation calculating what the cost difference will be
-			double tempC=this.deltaEvaluation(newSolution, size, i1, i2, c);
-			
-			//if the cost will be an improvement or equal, actually flip it
-			if(tempC<=bestEval) {
-				acceptedSolutionCounter++;
-				c=tempC;
-				bestEval=c;
-				swapPoints(newSolution, i1, i2);
+		for(int j=0; j<numberOfIterations; j++) {
+			// for each value in the solution..
+			for(int i1=0; i1<size; i1++) {
 				
-//				if(c == getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
-//				System.out.println("GOOD DELTA AND ACTUAL ARE BOTH " + c);
-//			
-//				if(c != getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
-//				System.out.println("ERROR DELTA C IS " + c + " BUT ACTUAL VALUE : " + getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()));
-			}
-			
-		}	
+				int i2 = (i1+1)%size;
+				
+				//delta evaluation calculating what the cost difference will be
+				double tempC=this.deltaEvaluation(newSolution, size, i1, i2, c);
+				
+				//if the cost will be an improvement or equal, actually flip it
+				if(tempC<=bestEval) {
+					c=tempC;
+					bestEval=c;
+					swapPoints(newSolution, i1, i2);
+					
+//					if(c == getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
+//					System.out.println("GOOD DELTA AND ACTUAL ARE BOTH " + c);
+//				
+//					if(c != getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()))
+//					System.out.println("ERROR DELTA C IS " + c + " BUT ACTUAL VALUE : " + getObjectiveFunction().getObjectiveFunctionValue(oSolution.getSolutionRepresentation()));
+				}
+				
+			}	
+		}
+		
+		
 		
 		oSolution.setObjectiveFunctionValue(c);
 		

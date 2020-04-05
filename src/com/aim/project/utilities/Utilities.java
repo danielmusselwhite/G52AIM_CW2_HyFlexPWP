@@ -1,7 +1,12 @@
 package com.aim.project.utilities;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import com.aim.project.pwp.instance.Location;
@@ -74,6 +79,25 @@ public class Utilities {
 
 		return -1;
 	}
+	
+	
+	public static void myPrintSolution(String strOutputFilePath, List<Location> loRouteLocations) {
+			
+			OutputStream os;
+			try {
+				os = new FileOutputStream(strOutputFilePath);
+				PrintStream printStream = new PrintStream(os);
+				loRouteLocations.forEach( l -> {
+					printStream.print("("+l.getX() + "," + l.getY()+")");
+					if(l!=loRouteLocations.get(loRouteLocations.size()-1))
+						printStream.print("-> ");
+				});
+				printStream.close();
+			} catch (FileNotFoundException e) {
+	
+				e.printStackTrace();
+			}
+		}
 	
 }
 
