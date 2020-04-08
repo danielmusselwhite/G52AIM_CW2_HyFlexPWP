@@ -39,8 +39,6 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	
 	public PWPSolutionInterface oBestSolution;
 	
-	private int iBestSolutionIndex;
-	
 	public PWPInstanceInterface oInstance;
 	
 	private HeuristicInterface[] aoHeuristics;
@@ -84,6 +82,7 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		
 		return oBestSolution;
 	}
+	
 
 	@Override
 	public double applyHeuristic(int hIndex, int currentIndex, int candidateIndex) {
@@ -134,7 +133,18 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		// DONE return the location IDs of the best solution including DEPOT and HOME locations
 		//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME"
 		
-		return this.solutionToString(this.iBestSolutionIndex);
+		String representation = new String();
+		int[] locations = oBestSolution.getSolutionRepresentation().getSolutionRepresentation();
+	
+//		e.g. "DEPOT -> 0 -> 2 -> 1 -> HOME" 
+		representation += "DEPOT -> ";
+		for(int i=0; i<locations.length; i++) {
+			representation += locations[i];
+			representation+=" -> ";
+		}
+		representation+="HOME";
+		
+		return representation;
 	}
 
 	@Override
@@ -359,7 +369,6 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 	
 	private void updateBestSolution(int index) {
 		oBestSolution = aoMemoryOfSolutions[index];
-		iBestSolutionIndex = index;
 	}
 	
 	@Override
@@ -374,5 +383,11 @@ public class AIM_PWP extends ProblemDomain implements Visualisable {
 		int[] city_ids = getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
 		Location[] route = Arrays.stream(city_ids).boxed().map(getLoadedInstance()::getLocationForDelivery).toArray(Location[]::new);
 		return route;
+	}
+	
+	
+	// Just used at the very end to negate the floating point precision loss of information to allow for a more accurate comparison
+	public double getTotalCostForBestSolution() {
+		return oObjectiveFunction.getObjectiveFunctionValue(oBestSolution.getSolutionRepresentation());
 	}
 }

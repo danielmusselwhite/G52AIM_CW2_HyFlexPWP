@@ -33,7 +33,7 @@ public class SR_IE_HH extends HyperHeuristic {
 
 		while(!hasTimeExpired() ) {
 			
-			h = rng.nextInt(oProblem.getNumberOfHeuristics());
+			h = rng.nextInt(oProblem.getNumberOfHeuristics()-2);//ignoring crossover by minusing 2
 	
 			double candidate;
 			if(h < 5) {

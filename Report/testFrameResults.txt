@@ -1,0 +1,660 @@
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20755624
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 0.3107396432587775
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 17682163
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 0.3109859077639027
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20699821
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 0.3107396432587775
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 17028283
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 0.3107396432587775
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20041493
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 0.3115831322322686
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16925761
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20170714
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16414294
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 0.3107396432587775
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19844659
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 0.3109859077639027
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16938932
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 0.3101042203654692
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19725943
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16182550
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 0.3131368561444782
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19330176
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 0.31434330034059516
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16312853
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 0.3126853953237016
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19925214
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 17021288
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19799104
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 16870190
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 0.3108525388795082
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20445944
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 0.3110988033846333
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 17403045
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 0.3109859077639027
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20863967
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: carparks-40
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 0.31094067075164483
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 17476737
+HyperHeuristic: SR_IE_HH
+Problem: carparks-40
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 0.3126853953237016
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20752103
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 0.4573075415765927
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13616634
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 0.4594153466261277
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20748090
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 0.48622964398645907
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13678369
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 0.4672506024043387
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20625314
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 0.45572485981061106
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13432201
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 0.47127944236660485
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 19908220
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 0.4573075415765927
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13426815
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 0.45572485981061106
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20675216
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 0.45572659653167846
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13597204
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 0.4753355368976868
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20585741
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 0.45731399792446437
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13628206
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 0.4573058048555253
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20781748
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 0.48622964398645907
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13683702
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 0.45572485981061106
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20707702
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 0.4891806859061424
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13685018
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 0.4573058048555253
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20758780
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 0.45572485981061106
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13721170
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 0.4761414586018836
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20760400
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 0.45572659653167846
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13589653
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 0.4672506024043387
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 20706093
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: tramstops-85
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 0.486228207187677
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 13608827
+HyperHeuristic: SR_IE_HH
+Problem: tramstops-85
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 0.4855963265030758
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18757564
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 1.3334859180927485
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4816177
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 0
+Seed: -2756779783241015075
+Best Solution Value: 1.7879680002114664
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18741265
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 1.3122051699320616
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4892422
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 1
+Seed: -1778697261775627294
+Best Solution Value: 1.7190490161217693
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18752626
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 1.3414734541953168
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4902371
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 2
+Seed: 1949163304292739118
+Best Solution Value: 1.6779223132026766
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18904653
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 1.2961317133994807
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4932888
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 3
+Seed: -9189215462018074404
+Best Solution Value: 1.6723467915192234
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18755790
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 1.3233456620467217
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4887991
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 4
+Seed: 1558422429319230388
+Best Solution Value: 1.76970083155815
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18672652
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 1.3298645638762565
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4844920
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 5
+Seed: -390214628494502408
+Best Solution Value: 1.66079601490317
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18787368
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 1.3311187284977501
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4898542
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 6
+Seed: 1992704251854049225
+Best Solution Value: 1.708834575210675
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18769579
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 1.323575310523164
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4892199
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 7
+Seed: 3565493813778994341
+Best Solution Value: 1.7082697414919688
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18751982
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 1.3119296715553184
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4882220
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 8
+Seed: -4627363891166193975
+Best Solution Value: 1.6903281122555716
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18735273
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 1.2845387681114615
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4829055
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 9
+Seed: -5601064434118521723
+Best Solution Value: 1.7040093918775854
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 18767512
+HyperHeuristic: MyHH-MS1B-IS-50
+Problem: trafficsignals-446
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 1.338561093475628
+
+
+
+Iteration	f(s)	f(s')	Accept
+Total iterations = 4909445
+HyperHeuristic: SR_IE_HH
+Problem: trafficsignals-446
+Run ID: 10
+Seed: -397111722581620287
+Best Solution Value: 1.6361361385344777
+
+
+
