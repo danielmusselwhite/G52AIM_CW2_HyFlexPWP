@@ -1,4 +1,4 @@
-package com.aim.project.pwp.hyperheuristics;
+package com.aim.project.pwp.hyperheuristics.oldMyHHs;
 
 
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ import com.aim.project.utilities.Utilities;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-public class MYHH_MS1B_IS extends HyperHeuristic {
+public class MYHH_MS1B_SA extends HyperHeuristic {
 
 	private final int m_memoryBufferSize;
 	private final double m_defaultScore;
 	
-	public MYHH_MS1B_IS(long lSeed, int memoryBufferSize, double defaultScore) {
+	public MYHH_MS1B_SA(long lSeed, int memoryBufferSize, double defaultScore) {
 		super(lSeed);
 		
 		this.m_memoryBufferSize = memoryBufferSize;//10
@@ -29,11 +29,14 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 	@Override
 	protected void solve(ProblemDomain oProblem) {
 		// TODO Auto-generated method stub
-		oProblem.setMemorySize(3);	// 0S, 1SPrime,2XO
+		oProblem.setMemorySize(3);	// 0Best, 1S, 2SPrime
 
 		
-		oProblem.initialiseSolution(0); // holds the current Solution
-		double current = oProblem.getFunctionValue(0);
+		oProblem.initialiseSolution(0); // holds the best
+		oProblem.copySolution(0,1); // holds the one currently being explored
+
+		double currentBest = oProblem.getFunctionValue(0);
+		double candidateS = currentBest;
 		
 		oProblem.setIntensityOfMutation(0.2);
 		oProblem.setDepthOfSearch(0.2);
@@ -45,6 +48,9 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 		//creating new MS with default values
 		MemoryBasedSelection ms = new MemoryBasedSelection(this.rng, oProblem.getNumberOfHeuristics()-2, m_memoryBufferSize, m_defaultScore);
 
+		//creating cooling schedule
+		MyGeometricCooling gc = new MyGeometricCooling(currentBest);
+				
 		
 		while(!hasTimeExpired() ) {
 			
@@ -54,23 +60,41 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 
 			// applying the heuristic
 			
-			double candidate;
+			double candidateSPrime;
 			
 			if(h < 5) {
-				candidate = oProblem.applyHeuristic(h, 0, 1);
+				candidateSPrime = oProblem.applyHeuristic(h, 1, 2);
 			} else {
 				// perform XO on random solution and current solution to create new candidate
-				oProblem.initialiseSolution(2);
-				candidate = oProblem.applyHeuristic(h, 0, 2, 1);
+				candidateSPrime = oProblem.applyHeuristic(h, 1, 0, 2);
 			}
-			ms.updateHeuristicMemory(h, candidate/current);
+			ms.updateHeuristicMemory(h, candidateSPrime/candidateS);
 			
 			// ACCEPTANCE
 			
 			// if this is a strict improvement on the candidateS
-			if(candidate<current) {
-				oProblem.copySolution(1, 0);	// update the best one
-				current=candidate;
+			if(candidateSPrime<candidateS) {		
+				
+				oProblem.copySolution(2, 1);	// update s to be s'
+				candidateS=candidateSPrime;
+				
+				// if this is also a strict improvement on the current best
+				if(candidateSPrime<currentBest) {
+					oProblem.copySolution(2, 0);	// update the best one
+					currentBest=candidateSPrime;
+				}
+							
+			}
+			// else this doesn't improve on the last candidate S (and hence not the current best)
+			else{
+		
+				// calculate difference between cost of s' and s, delta < 0 means improvement made
+				double delta = Math.abs(oProblem.getFunctionValue(2) - oProblem.getFunctionValue(1)); // delta <- f(s') - f(s*);
+				double r = rng.nextDouble(); // r  <- random \in [0,1];
+				
+				// accept with boltzmann probability
+				if(r<gc.boltzmannProbability(delta, gc.getCurrentTemperature()))
+					oProblem.copySolution(2,1); //update s to be s' despite being worse BUT do not update the actual best
 			}
 
 			iteration++;
@@ -85,7 +109,7 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 
 	@Override
 	public String toString() {
-		return "MyHH-MS1B-IS";
+		return "MyHH-MS1B-SA";
 	}
 
 private class MemoryBasedSelection{
@@ -190,4 +214,28 @@ private class MemoryBasedSelection{
 		}
 	}
 	
+	private class MyGeometricCooling{
+		private double m_dCurrentTemperature;
+		
+		public MyGeometricCooling(double initialSolutionFitness) {
+			
+			double c = 1.0d;
+			this.m_dCurrentTemperature = c * initialSolutionFitness;
+		}
+		
+		public double getCurrentTemperature() {
+			return this.m_dCurrentTemperature;
+		}
+		
+		public void advanceTemperature(double alpha) {
+			this.m_dCurrentTemperature=alpha*this.m_dCurrentTemperature;
+		}
+		
+		public double boltzmannProbability(double delta, double T) {
+			return Math.exp(-delta/T);
+		}
+
+	}
+	
 }
+

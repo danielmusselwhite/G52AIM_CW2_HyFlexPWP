@@ -1,8 +1,6 @@
-package com.aim.project.pwp.hyperheuristics;
+package com.aim.project.pwp.hyperheuristics.oldMyHHs;
 
 
-import java.util.ArrayList;
-import java.util.Queue;
 import java.util.Random;
 
 import com.aim.project.pwp.AIM_PWP;
@@ -13,16 +11,14 @@ import com.aim.project.utilities.Utilities;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-public class MYHH_MS1B_IS extends HyperHeuristic {
+public class MYHH_MS_IS extends HyperHeuristic {
 
 	private final int m_memoryBufferSize;
-	private final double m_defaultScore;
 	
-	public MYHH_MS1B_IS(long lSeed, int memoryBufferSize, double defaultScore) {
+	public MYHH_MS_IS(long lSeed, int memoryBufferSize) {
 		super(lSeed);
 		
 		this.m_memoryBufferSize = memoryBufferSize;//10
-		this.m_defaultScore = defaultScore;
 	}
 
 	
@@ -32,7 +28,8 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 		oProblem.setMemorySize(3);	// 0S, 1SPrime,2XO
 
 		
-		oProblem.initialiseSolution(0); // holds the current Solution
+		oProblem.initialiseSolution(0); // holds the best
+		oProblem.copySolution(0,1); // holds the one currently being explored
 		double current = oProblem.getFunctionValue(0);
 		
 		oProblem.setIntensityOfMutation(0.2);
@@ -43,7 +40,7 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 		System.out.println("Iteration\tf(s)\tf(s')\tAccept");
 
 		//creating new MS with default values
-		MemoryBasedSelection ms = new MemoryBasedSelection(this.rng, oProblem.getNumberOfHeuristics()-2, m_memoryBufferSize, m_defaultScore);
+		MemoryBasedSelection ms = new MemoryBasedSelection(this.rng, oProblem.getNumberOfHeuristics()-2, m_memoryBufferSize);
 
 		
 		while(!hasTimeExpired() ) {
@@ -85,65 +82,60 @@ public class MYHH_MS1B_IS extends HyperHeuristic {
 
 	@Override
 	public String toString() {
-		return "MyHH-MS1B-IS";
+		return "MyHH-MS-IS";
 	}
+	
 
 private class MemoryBasedSelection{
 		
 		private int m_heuristicCount;
 		private int m_memoryBufferSize;
-		private ArrayList<HeuristicScorePair> m_heuristicPerformanceBuffer;
-		private int m_defaultScore;
+		private int[] m_nextMemoryLocation;
+		private double[][] m_heuristicPerformanceBuffer;
 		
-		public MemoryBasedSelection(Random rng, int heuristicsCount, int memoryBufferSize, double defaultScore) {
+		public MemoryBasedSelection(Random rng, int heuristicsCount, int memoryBufferSize) {
 			m_heuristicCount=heuristicsCount;
 			m_memoryBufferSize = memoryBufferSize;
 			
-			m_heuristicPerformanceBuffer = new ArrayList<HeuristicScorePair>();
+			m_heuristicPerformanceBuffer = new double[heuristicsCount][memoryBufferSize];
+			m_nextMemoryLocation= new int [heuristicsCount];
 
+			//defaulted all to a very high value so they are all very likely to be picked at the start and then be reset to their percentage increase/decrease
+			for(int i=0; i<m_heuristicPerformanceBuffer.length; i++)
+				for(int j=0; j<m_heuristicPerformanceBuffer[i].length; j++)
+					m_heuristicPerformanceBuffer[i][j]=1000d;
 		}
 		
-		//adding new score and if the size is now greater than the limit, remove the first element from the queue
+		private int getHeuristicNextMemoryLocationToBeModified(int heuristicIndex) {
+			int nextIndex = m_nextMemoryLocation[heuristicIndex];
+			m_nextMemoryLocation[heuristicIndex]=(m_nextMemoryLocation[heuristicIndex]+1)%m_memoryBufferSize;
+			return nextIndex;
+		}
+		
 		public void updateHeuristicMemory(int heuristicIndex, double d) {
-			m_heuristicPerformanceBuffer.add(new HeuristicScorePair(heuristicIndex, d));
-			
-			if(m_heuristicPerformanceBuffer.size()>m_memoryBufferSize)
-				m_heuristicPerformanceBuffer.remove(0);
+			m_heuristicPerformanceBuffer[heuristicIndex][getHeuristicNextMemoryLocationToBeModified(heuristicIndex)] = d;
 		}
 		
-		private double[] getHeuristicScores() {
-
-			int[] heuristicCount = new int[m_heuristicCount];
-			double[] heuristicScores = new double [m_heuristicCount];
-			
-			//getting total of all heuristics in the buffer (used to calculate average)
-			for(int i=0; i<m_heuristicPerformanceBuffer.size(); i++) {
-				HeuristicScorePair thisHeuristic = this.m_heuristicPerformanceBuffer.get(i);
-				heuristicScores[thisHeuristic.getHeuristicID()]+=thisHeuristic.getScore();	
-				heuristicCount[thisHeuristic.getHeuristicID()]++;
-			}
-			
-			//calculating final scores for all of the scores in the buffer
-			for(int i=0; i<heuristicScores.length; i++) {
-				if(heuristicCount[i]==0)
-					heuristicScores[i]=m_defaultScore;
-				else
-					heuristicScores[i]/=heuristicCount[i];
-			}
-				
-			return heuristicScores;
+		private double getScore(int heuristicIndex, int memoryIndex) {
+			return m_heuristicPerformanceBuffer[heuristicIndex][memoryIndex];
 		}
 		
-		private double getTotalHeuristicScores(double[] heuristicScores) {
-			double sum=0;
-			for(int i=0; i<heuristicScores.length; i++)
-				sum+=heuristicScores[i];
+		private double getHeuristicScore(int heuristicIndex) {
+			double sum = 0;
+			for(int j=0; j<m_heuristicPerformanceBuffer[heuristicIndex].length; j++)
+				sum+=getScore(heuristicIndex,j);
 			return sum;
 		}
 		
-		private double selectRandomScorePoint(double[] heuristicScores) {
-			double total = getTotalHeuristicScores(heuristicScores);
-			
+		private double getTotalScore() {
+			double sum = 0;
+			for(int i=0; i<m_heuristicPerformanceBuffer.length; i++)
+				sum+=getHeuristicScore(i);
+			return sum;
+		}
+		
+		private double selectRandomScorePoint() {
+			double total = getTotalScore();
 			int totalInt = (int) total;
 			double totalDouble = total - ((int) total); // total value - the total value without everything after the decimal place = just the decimal place
 			if(totalInt==0)
@@ -153,15 +145,14 @@ private class MemoryBasedSelection{
 		}
 		
 		public int performMemorySelection() {
-			double[] heuristicScores = getHeuristicScores();
 			
-			double selection = selectRandomScorePoint(heuristicScores);
+			double selection = selectRandomScorePoint();
 			
 			int h=0;
 			//select heuristic by choosing first heuristic to have a cumulative score above the random value
 			double sum=0;
-			for(int i=0; i<heuristicScores.length; i++) {
-				sum+=heuristicScores[i];
+			for(int i=0; i<m_heuristicPerformanceBuffer.length; i++) {
+				sum+=getHeuristicScore(i);
 				if(sum>selection) {
 					h=i;
 					break;
@@ -171,23 +162,6 @@ private class MemoryBasedSelection{
 			return h;
 		}
 		
-	}
-
-	private class HeuristicScorePair{
-		private final int m_heuristicID;
-		private final double m_score;
-		public HeuristicScorePair(int hid, double score) {
-			this.m_score = score;
-			this.m_heuristicID = hid;
-		}
-		
-		public int getHeuristicID() {
-			return m_heuristicID;
-		}
-		
-		public double getScore() {
-			return m_score;
-		}
 	}
 	
 }

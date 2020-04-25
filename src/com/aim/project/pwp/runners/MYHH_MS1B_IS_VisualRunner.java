@@ -2,10 +2,10 @@ package com.aim.project.pwp.runners;
 
 
 import com.aim.project.pwp.hyperheuristics.MYHH_MS1B_IS;
-import com.aim.project.pwp.hyperheuristics.MYHH_MS_IS;
-import com.aim.project.pwp.hyperheuristics.MYHH_MS_SA;
-import com.aim.project.pwp.hyperheuristics.MYHH_RWS_SA;
 import com.aim.project.pwp.hyperheuristics.SR_IE_HH;
+import com.aim.project.pwp.hyperheuristics.oldMyHHs.MYHH_MS_IS;
+import com.aim.project.pwp.hyperheuristics.oldMyHHs.MYHH_MS_SA;
+import com.aim.project.pwp.hyperheuristics.oldMyHHs.MYHH_RWS_SA;
 
 import AbstractClasses.HyperHeuristic;
 
